@@ -75,26 +75,47 @@
     }
 
     Papa.parse("kontakte.csv", {
-        download: true, header: true,
-        complete: function(results) {
-            const container = document.getElementById('directory');
-            let lastDept = "";
-            results.data.sort((a,b) => a.Abteilung.localeCompare(b.Abteilung)).forEach(p => {
-                if(!p.Name) return;
-                if(p.Abteilung !== lastDept) {
-                    lastDept = p.Abteilung;
-                    let h = document.createElement('h2'); h.className="section-header"; h.innerText=lastDept;
-                    container.appendChild(h);
-                }
-                let cls = "cat-" + p.Abteilung.toLowerCase().replace(/\s/g, '');
-                let div = document.createElement('div');
-                div.className = `contact-card ${cls}`;
-                div.innerHTML = `<span class="dept-badge">${p.Abteilung}</span>
-                                 <h3>${p.Name}</h3><p>Tel: ${p.Telefon}<br>${p.Email}</p>`;
-                container.appendChild(div);
-            });
-        }
-    });
+    download: true,
+    header: true,
+    skipEmptyLines: true, // Ignoriert leere Zeilen am Ende der Datei
+    complete: function(results) {
+        const container = document.getElementById('directory');
+        let lastDept = "";
+
+        // 1. Daten filtern, um sicherzustellen, dass nur Zeilen mit Abteilung sortiert werden
+        // Das verhindert den "undefined" Fehler beim Sortieren
+        const validData = results.data.filter(p => p.Abteilung && p.Name);
+
+        // 2. Sortierung mit Sicherheitsprüfung
+        validData.sort((a, b) => {
+            return (a.Abteilung || "").localeCompare(b.Abteilung || "");
+        });
+
+        // 3. Verarbeitung der bereinigten Daten
+        validData.forEach(p => {
+            if(p.Abteilung !== lastDept) {
+                lastDept = p.Abteilung;
+                let h = document.createElement('h2'); 
+                h.className = "section-header"; 
+                h.innerText = lastDept;
+                container.appendChild(h);
+            }
+
+            // Sicherer Zugriff auf die Abteilung für die CSS-Klasse
+            let deptClass = p.Abteilung ? p.Abteilung.toLowerCase().replace(/\s/g, '') : 'unknown';
+            let cls = "cat-" + deptClass;
+
+            let div = document.createElement('div');
+            div.className = `contact-card ${cls}`;
+            div.innerHTML = `
+                <span class="dept-badge">${p.Abteilung}</span>
+                <h3>${p.Name}</h3>
+                <p>Tel: ${p.Telefon || '-'}<br>${p.Email || '-'}</p>
+            `;
+            container.appendChild(div);
+        });
+    }
+});
 </script>
 </body>
 </html>
