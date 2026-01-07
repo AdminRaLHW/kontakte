@@ -3,9 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontaktverzeichnis</title>
+    <title>Telefonverzeichnis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        :root {
+            --accent-it: #1976d2;
+            --bg-it: #e3f2fd;
+            --accent-marketing: #7b1fa2;
+            --bg-marketing: #f3e5f5;
+            --accent-default: #455a64;
+            --bg-default: #eceff1;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; color: #333; }
+        .no-print { margin-bottom: 20px; display: flex; gap: 10px; }
+        input { padding: 12px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+        
+        #directory { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        
+        .section-header { grid-column: 1 / -1; border-bottom: 2px solid #333; margin-top: 40px; }
+
+        .contact-card { 
+            padding: 15px; border-radius: 8px; position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 6px solid var(--accent-default);
+            background: var(--bg-default);
+        }
+
+        /* Dynamische Farben basierend auf Klassen */
+        .cat-it { background: var(--bg-it); border-left-color: var(--accent-it); }
+        .cat-marketing { background: var(--bg-marketing); border-left-color: var(--accent-marketing); }
+
+        .dept-badge { 
+            display: none; /* Nur für den Druck */
+            font-size: 0.7rem; font-weight: bold; padding: 2px 6px; 
+            border-radius: 3px; color: white; text-transform: uppercase;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            .section-header { break-before: page; margin-top: 0; }
+            .contact-card { 
+                background: white !important; border: 1px solid #eee !important; 
+                border-left: 4px solid #333 !important; break-inside: avoid; 
+                display: inline-block; width: 45%; margin: 1%;
+            }
+            .dept-badge { 
+                display: inline-block; margin-bottom: 8px;
+                -webkit-print-color-adjust: exact; 
+            }
+            .cat-it .dept-badge { background-color: var(--accent-it) !important; }
+            .cat-marketing .dept-badge { background-color: var(--accent-marketing) !important; }
+            @page { size: A4 portrait; margin: 1cm; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Kontaktverzeichnis</h1>
+
+<div class="no-print">
+    <input type="text" id="search" onkeyup="filter()" placeholder="Name oder Abteilung suchen...">
+    <button onclick="window.print()" style="padding:10px; cursor:pointer;">Drucken / PDF</button>
+</div>
+
+<div id="directory"></div>
+
+<script>
+    function filter() {
+        let val = document.getElementById('search').value.toLowerCase();
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.style.display = card.innerText.toLowerCase().includes(val) ? "" : "none";
+        });
+    }
+
+    Papa.parse("kontakte.csv", {
+        download: true, header: true,
+        complete: function(results) {
+            const container = document.getElementById('directory');
+            let lastDept = "";
+            results.data.sort((a,b) => a.Abteilung.localeCompare(b.Abteilung)).forEach(p => {
+                if(!p.Name) return;
+                if(p.Abteilung !== lastDept) {
+                    lastDept = p.Abteilung;
+                    let h = document.createElement('h2'); h.className="section-header"; h.innerText=lastDept;
+                    container.appendChild(h);
+                }
+                let cls = "cat-" + p.Abteilung.toLowerCase().replace(/\s/g, '');
+                let div = document.createElement('div');
+                div.className = `contact-card ${cls}`;
+                div.innerHTML = `<span class="dept-badge">${p.Abteilung}</span>
+                                 <h3>${p.Name}</h3><p>Tel: ${p.Telefon}<br>${p.Email}</p>`;
+                container.appendChild(div);
+            });
+        }
+    });
+</script>
 </body>
 </html>
