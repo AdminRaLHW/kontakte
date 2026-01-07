@@ -110,11 +110,32 @@ input {
         justify-content: flex-start;
     }
 
-    .dept-badge { 
-        display: inline-block; 
-        margin-bottom: 8px;
-        -webkit-print-color-adjust: exact; 
-        print-color-adjust: exact;
+    .contact-row {
+        display: flex;
+        align-items: center;    /* Zentriert Kinder (Icon & Text) vertikal zur Mitte */
+        gap: 10px;
+        margin-bottom: 6px;
+        line-height: 1;         /* Verhindert, dass Text-Zeilenabstand das Icon wegdrückt */
+    }
+
+    .icon-container {
+        display: flex;          /* Macht auch den Icon-Halter zum Flex-Box */
+        align-items: center;    /* Zentriert das SVG im Container */
+        justify-content: center;
+        width: 16px;            /* Feste Breite für ordentliche Ausrichtung */
+        flex-shrink: 0;
+        height: 30px;         /* Verhindert, dass das Icon schrumpft */
+    }
+
+    .icon-accent {
+        display: block;         /* Entfernt den Standard-Abstand unter dem SVG */
+        margin: 0;
+        padding: 0;
+    }
+
+    .value-container {
+        display: inline-block;
+        vertical-align: middle;
     }
 
     .cat-it .dept-badge { background-color: var(--accent-it) !important; }
