@@ -5,6 +5,9 @@
     --bg-marketing: #f3e5f5;
     --accent-default: #455a64;
     --bg-default: #eceff1;
+    --accent-01: #1976d2;
+    --bg-01: #e3f2fd;
+   
 }
 
 body { 
@@ -36,7 +39,7 @@ input {
 
 #directory { 
     display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); 
     gap: 20px; 
 }
 
@@ -65,6 +68,7 @@ input {
 
 /* Dynamische Farben basierend auf Klassen */
 .cat-it { background: var(--bg-it); border-left-color: var(--accent-it); }
+.cat-01 { background: var(--bg-01); border-left-color: var(--accent-01); }
 .cat-marketing { background: var(--bg-marketing); border-left-color: var(--accent-marketing); }
 
 .dept-badge { 
@@ -138,10 +142,10 @@ input {
         vertical-align: middle;
     }
 
-    .cat-it .dept-badge { background-color: var(--accent-it) !important; }
+  
     .cat-marketing { border-left-color: var(--accent-marketing) !important; }
-    .cat-marketing .dept-badge { background-color: var(--accent-marketing) !important; }
     .cat-it { border-left-color: var(--accent-it) !important; }
+    .cat-01 { border-left-color: var(--accent-01) !important; }
 
     @page { 
         size: A4 portrait; 

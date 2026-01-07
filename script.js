@@ -35,7 +35,7 @@ Papa.parse("data/kontakte.csv", {
                 container.appendChild(h);
             }
 
-            let deptClass = p.Abteilung ? p.Abteilung.toLowerCase().replace(/\s/g, '') : 'unknown';
+            let deptClass = p.ColorCode ? p.ColorCode.toLowerCase().replace(/\s/g, '') : 'unknown';
             let cls = "cat-" + deptClass;
 
             let div = document.createElement('div');
