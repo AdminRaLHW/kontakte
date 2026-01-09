@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telefonverzeichnis | Professional Directory</title>
+    <title>Phone Directory | Professional Directory</title>
     
     <!-- External Library for CSV Parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -23,7 +23,8 @@
             /* Accessibility & UI Colors */
             --focus-green: #2e7d32;
             --text-main: #333;
-            --card-min-width: 300px;
+            /* Increased min-width to provide more space for long email addresses */
+            --card-min-width: 350px; 
             --link-accent: #2e7d32;
         }
 
@@ -99,7 +100,7 @@
             height: 26px;
             border-radius: 50%;
             cursor: pointer;
-            display: none; /* Hidden by default, shown via JS */
+            display: none; /* Hidden by default */
             align-items: center;
             justify-content: center;
             font-size: 14px;
@@ -148,34 +149,43 @@
             background: var(--bg-default);
             display: flex;
             flex-direction: column;
+            min-width: 0; /* Prevents card from expanding beyond grid container */
         }
 
         .contact-card h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
         .job-position { font-weight: 600; color: #666; margin: 0 0 15px 0; font-size: 0.95rem; }
-
-        /* Custom Link Styles */
-        .contact-link {
-            text-decoration: none; /* No underline as requested */
-            color: inherit;        /* Inherit text color */
-            transition: color 0.2s;
-            display: inline-block;
-        }
-
-        .contact-link:hover {
-            color: var(--link-accent);
-            text-decoration: none; /* Visual feedback on hover */
-        }
 
         .contact-row {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem; /* Slightly smaller to fit content better */
         }
 
         .icon-container { flex-shrink: 0; width: 18px; display: flex; align-items: center; }
-        .value-container { overflow-wrap: break-word; word-break: break-all; }
+
+        /* --- EMAIL & TEXT HANDLING --- */
+        .value-container { 
+            flex-grow: 1;
+            min-width: 0; /* Required for text-overflow to work in flexbox */
+            overflow: hidden; 
+            text-overflow: ellipsis; /* Shows "..." for long text */
+            white-space: nowrap; /* Prevents text from breaking into a new line */
+        }
+
+        .contact-link {
+            text-decoration: none; 
+            color: inherit;       
+            transition: color 0.2s;
+            display: block; /* Ensures ellipsis works on the link itself if needed */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .contact-link:hover {
+            color: var(--link-accent);
+        }
 
         /* Dynamic Category Colors */
         .cat-it { background: var(--bg-it); border-left-color: var(--accent-it); }
@@ -188,56 +198,64 @@
             .dept-section { break-inside: auto; }
             .cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
             .contact-card { background: white !important; border: 1px solid #ddd !important; break-inside: avoid; }
+            .value-container { white-space: normal; word-break: break-all; } /* Allow wrap in print to show full info */
             @page { size: A4 portrait; margin: 1.5cm; }
         }
 
         @media (max-width: 500px) {
             .no-print { flex-direction: column; align-items: stretch; }
             .cards-grid { grid-template-columns: 1fr; }
+            :root { --card-min-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<!-- Accessible Search Header -->
+<!-- Search Header -->
 <div class="no-print" role="search">
     <div class="search-wrapper">
-        <label for="search" class="visually-hidden">Verzeichnis durchsuchen</label>
-        <input type="text" id="search" onkeyup="handleSearch()" placeholder="Suchen nach Name, Abteilung, Position...">
-        <button id="clear-search" class="clear-btn" onclick="clearSearch()" aria-label="Suche zurücksetzen">✕</button>
+        <label for="search" class="visually-hidden">Search Directory</label>
+        <input type="text" id="search" onkeyup="handleSearch()" placeholder="Search by name, department, position...">
+        <button id="clear-search" class="clear-btn" onclick="clearSearch()" aria-label="Reset search">✕</button>
     </div>
-    <button onclick="window.print()" class="print-btn">Drucken / PDF</button>
+    <button onclick="window.print()" class="print-btn">Print / PDF</button>
 </div>
 
-<!-- Root directory container -->
-<main id="directory" aria-label="Telefonverzeichnis"></main>
+<!-- Main content area -->
+<main id="directory" aria-label="Phone Directory"></main>
 
 <script>
-    /* --- ICONS (SVG) --- */
+    /* --- SVGs --- */
     const ICON_PHONE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
     const ICON_MOBILE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
     const ICON_MAIL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`;
 
     /**
-     * Search Handling
+     * Search Input Logic
      */
     function handleSearch() {
         const input = document.getElementById('search');
         const clearBtn = document.getElementById('clear-search');
         
-        // Show/Hide clear button
+        // Toggle clear button visibility
         clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
         
         filter(input.value.toLowerCase());
     }
 
+    /**
+     * Clear Search Logic
+     */
     function clearSearch() {
         const input = document.getElementById('search');
         input.value = "";
         input.focus();
-        handleSearch(); // Triggers filter and hides clear button
+        handleSearch(); 
     }
 
+    /**
+     * Filter Display based on query
+     */
     function filter(query) {
         const sections = document.querySelectorAll('.dept-section');
         sections.forEach(section => {
@@ -254,7 +272,7 @@
     }
 
     /**
-     * DATA LOADING
+     * DATA LOADING via PapaParse
      */
     Papa.parse("data/kontakte.csv", {
         download: true,
@@ -263,25 +281,30 @@
         complete: function(results) {
             renderDirectory(results.data);
         },
-        error: () => { document.getElementById('directory').innerHTML = "Fehler beim Laden der CSV."; }
+        error: () => { 
+            document.getElementById('directory').innerHTML = "Error loading CSV file. Please check path."; 
+        }
     });
 
     /**
-     * RENDERING
+     * RENDERING Logic
      */
     function renderDirectory(data) {
         const directory = document.getElementById('directory');
         directory.innerHTML = "";
 
+        // Basic validation and sorting by Department
         const validData = data.filter(p => p.Abteilung && p.Name);
         validData.sort((a, b) => a.Abteilung.localeCompare(b.Abteilung));
 
+        // Group data by Department
         const grouped = validData.reduce((acc, person) => {
             if (!acc[person.Abteilung]) acc[person.Abteilung] = [];
             acc[person.Abteilung].push(person);
             return acc;
         }, {});
 
+        // Build HTML structure
         for (const dept in grouped) {
             const section = document.createElement('section');
             section.className = "dept-section";
@@ -295,7 +318,10 @@
                 const card = document.createElement('div');
                 card.className = `contact-card ${colorCls}`;
                 
-                // Fields with automatic link generation
+                /**
+                 * Helper to render rows with automated link creation
+                 * title attribute is added to links to show full text on hover
+                 */
                 const renderRow = (icon, val, type) => {
                     if (!val || val.trim() === "" || val === "-") return "";
                     
@@ -307,7 +333,7 @@
                         <div class="contact-row">
                             <span class="icon-container">${icon}</span>
                             <span class="value-container">
-                                <a ${linkAttr} class="contact-link">${val}</a>
+                                <a ${linkAttr} class="contact-link" title="${val.trim()}">${val.trim()}</a>
                             </span>
                         </div>`;
                 };
