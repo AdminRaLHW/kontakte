@@ -1,310 +1,304 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Directory | Professional Directory</title>
+    <title>Professional Directory | Theme Optimized</title>
     
     <!-- External Library for CSV Parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
     <style>
-        /* --- CSS VARIABLES --- */
+        /* --- COLOR MANAGEMENT (HSL BASED) --- */
         :root {
-            --accent-it: #1976d2;
-            --bg-it: #e3f2fd;
-            --accent-marketing: #7b1fa2;
-            --bg-marketing: #f3e5f5;
-            --accent-default: #455a64;
-            --bg-default: #eceff1;
-            --accent-01: #1976d2;
-            --bg-01: #e3f2fd;
-            
-            /* Accessibility & UI Colors */
+            /* Global Transparency for Card Backgrounds */
+            --bg-opacity: 0.1;
+            --border-opacity: 1;
+
+            /* Standard UI Colors (Light Mode) */
+            --bg-body: #f4f7f9;
+            --bg-ui-panel: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #546e7a;
+            --input-border: #e0e0e0;
             --focus-green: #2e7d32;
-            --text-main: #333;
-            /* Increased min-width to provide more space for long email addresses */
-            --card-min-width: 350px; 
-            --link-accent: #2e7d32;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+            /* Category HSL Definitions (Hue, Saturation, Lightness) */
+            /* Simply define the H, S, L values here */
+            --cat-default-h: 200; --cat-default-s: 15%; --cat-default-l: 45%;
+            --cat-it-h: 210;      --cat-it-s: 80%;  --cat-it-l: 50%;
+            --cat-marketing-h: 290; --cat-marketing-s: 60%; --cat-marketing-l: 50%;
+            --cat-sales-h: 140;     --cat-sales-s: 50%; --cat-sales-l: 45%;
+            --cat-hr-h: 10;         --cat-hr-s: 70%;  --cat-hr-l: 55%;
+            --cat-01-h: 200;        --cat-01-s: 90%;  --cat-01-l: 40%;
+
+            /* Card Sizing */
+            --card-min-width: 350px;
         }
 
-        /* --- RESET & BASIC STYLING --- */
+        /* Dark Mode Overrides */
+        [data-theme="dark"] {
+            --bg-opacity: 0.15;
+            --bg-body: #121212;
+            --bg-ui-panel: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #b0bec5;
+            --input-border: #333;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            
+            /* Adjust lightness for dark mode visibility if needed */
+            --cat-it-l: 60%;
+            --cat-marketing-l: 65%;
+        }
+
+        /* --- BASIC SETUP --- */
         * { box-sizing: border-box; }
-        
         body { 
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
             padding: 20px; 
             margin: 0;
             color: var(--text-main); 
-            background-color: #f4f7f9;
+            background-color: var(--bg-body);
             line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Accessibility: Skip to content / Visually Hidden */
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        /* --- UI ELEMENTS (SEARCH & FILTER) --- */
+        /* --- UI CONTROLS --- */
         .no-print { 
             margin-bottom: 30px; 
             display: flex; 
-            gap: 12px; 
+            gap: 15px; 
             align-items: center;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background: var(--bg-ui-panel);
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
         }
 
-        /* Search Wrapper for Clear Button Position */
-        .search-wrapper {
-            position: relative;
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            min-width: 250px;
-        }
+        .search-wrapper { position: relative; flex-grow: 1; display: flex; align-items: center; }
 
         input { 
             width: 100%;
-            padding: 12px 45px 12px 16px; 
-            border: 2px solid #e0e0e0; 
-            border-radius: 8px; 
+            padding: 12px 16px; 
+            background: var(--bg-body);
+            border: 2px solid var(--input-border); 
+            border-radius: 10px; 
             font-size: 1rem;
+            color: var(--text-main);
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
 
-        /* Accessibility: Bold Green Focus */
-        input:focus, .print-btn:focus, .clear-btn:focus {
-            border-color: var(--focus-green);
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.3);
-            outline: 2px solid transparent;
-        }
+        input:focus { border-color: var(--focus-green); }
 
-        /* Clear Button inside Input */
-        .clear-btn {
-            position: absolute;
-            right: 10px;
-            background: #eee;
-            border: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none; /* Hidden by default */
+        /* Theme Toggle Button */
+        .theme-btn, .print-btn {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #666;
-            transition: background 0.2s;
-        }
-        
-        .clear-btn:hover { background: #ddd; color: #222; }
-
-        .print-btn {
-            padding: 12px 24px; 
+            gap: 8px;
+            padding: 10px 20px;
             cursor: pointer;
-            background-color: #fff;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            background: var(--bg-body);
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
             font-weight: 600;
+            color: var(--text-main);
             white-space: nowrap;
             transition: all 0.2s;
         }
 
-        .print-btn:hover { background-color: #f8f9fa; border-color: #ccc; }
+        .theme-btn:hover, .print-btn:hover { background: var(--input-border); }
 
-        /* --- STRUCTURE --- */
-        .dept-section { margin-bottom: 40px; }
+        /* --- DIRECTORY STRUCTURE --- */
+        .dept-section { margin-bottom: 50px; }
         .section-header { 
-            border-bottom: 3px solid #333; 
-            margin-bottom: 20px;
-            padding-bottom: 8px;
+            border-bottom: 2px solid var(--text-main); 
+            margin-bottom: 25px;
+            padding-bottom: 10px;
             text-transform: uppercase;
-            font-size: 1.4rem;
-            color: #222;
+            letter-spacing: 1px;
+            font-size: 1.2rem;
         }
 
         .cards-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); 
-            gap: 20px; 
+            gap: 25px; 
         }
 
-        /* --- CONTACT CARDS & LINKS --- */
+        /* --- THE DYNAMIC CONTACT CARD --- */
         .contact-card { 
-            padding: 18px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
-            border-left: 6px solid var(--accent-default);
-            background: var(--bg-default);
+            /* Default HSL variables if not overridden by cat-class */
+            --h: var(--cat-default-h);
+            --s: var(--cat-default-s);
+            --l: var(--cat-default-l);
+            
+            padding: 20px; 
+            border-radius: 12px; 
+            background-color: hsla(var(--h), var(--s), var(--l), var(--bg-opacity));
+            border-left: 6px solid hsla(var(--h), var(--s), var(--l), var(--border-opacity));
+            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
-            min-width: 0; /* Prevents card from expanding beyond grid container */
+            transition: transform 0.2s;
         }
 
-        .contact-card h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
-        .job-position { font-weight: 600; color: #666; margin: 0 0 15px 0; font-size: 0.95rem; }
+        .contact-card:hover { transform: translateY(-3px); }
+
+        .contact-card h3 { margin: 0 0 5px 0; font-size: 1.25rem; }
+        .job-position { font-weight: 600; color: var(--text-muted); margin: 0 0 15px 0; font-size: 0.9rem; }
 
         .contact-row {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
-            font-size: 0.88rem; /* Slightly smaller to fit content better */
+            margin-bottom: 10px;
+            font-size: 0.9rem;
         }
 
-        .icon-container { flex-shrink: 0; width: 18px; display: flex; align-items: center; }
+        .icon-container { flex-shrink: 0; width: 18px; color: hsla(var(--h), var(--s), var(--l), 1); }
 
-        /* --- EMAIL & TEXT HANDLING --- */
         .value-container { 
-            flex-grow: 1;
-            min-width: 0; /* Required for text-overflow to work in flexbox */
             overflow: hidden; 
-            text-overflow: ellipsis; /* Shows "..." for long text */
-            white-space: nowrap; /* Prevents text from breaking into a new line */
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
         }
 
-        .contact-link {
-            text-decoration: none; 
-            color: inherit;       
-            transition: color 0.2s;
-            display: block; /* Ensures ellipsis works on the link itself if needed */
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .contact-link { text-decoration: none; color: inherit; }
+        .contact-link:hover { color: var(--focus-green); }
 
-        .contact-link:hover {
-            color: var(--link-accent);
-        }
-
-        /* Dynamic Category Colors */
-        .cat-it { background: var(--bg-it); border-left-color: var(--accent-it); }
-        .cat-01 { background: var(--bg-01); border-left-color: var(--accent-01); }
-        .cat-marketing { background: var(--bg-marketing); border-left-color: var(--accent-marketing); }
+        /* Dynamic Class Mappings for CSV ColorCode */
+        .cat-it { --h: var(--cat-it-h); --s: var(--cat-it-s); --l: var(--cat-it-l); }
+        .cat-marketing { --h: var(--cat-marketing-h); --s: var(--cat-marketing-s); --l: var(--cat-marketing-l); }
+        .cat-hr { --h: var(--cat-hr-h); --s: var(--cat-hr-s); --l: var(--cat-hr-l); }
+        .cat-01 { --h: var(--cat-01-h); --s: var(--cat-01-s); --l: var(--cat-01-l); }
 
         /* --- PRINT STYLES --- */
         @media print {
             .no-print { display: none !important; }
-            .dept-section { break-inside: auto; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .contact-card { background: white !important; border: 1px solid #ddd !important; break-inside: avoid; }
-            .value-container { white-space: normal; word-break: break-all; } /* Allow wrap in print to show full info */
-            @page { size: A4 portrait; margin: 1.5cm; }
+            body { background-color: white !important; padding: 0; }
+            .contact-card { 
+                background: white !important; 
+                border: 1px solid #ddd !important; 
+                border-left: 8px solid hsla(var(--h), var(--s), var(--l), 1) !important; /* Ensure border is visible */
+                box-shadow: none !important;
+                break-inside: avoid;
+                -webkit-print-color-adjust: exact; /* Force colors in Chrome/Safari */
+                print-color-adjust: exact;
+            }
+            .value-container { white-space: normal; word-break: break-all; }
+            @page { margin: 1cm; }
         }
 
-        @media (max-width: 500px) {
-            .no-print { flex-direction: column; align-items: stretch; }
-            .cards-grid { grid-template-columns: 1fr; }
-            :root { --card-min-width: 100%; }
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .no-print { flex-wrap: wrap; }
+            .search-wrapper { order: 1; width: 100%; }
+            .theme-btn { order: 2; flex-grow: 1; justify-content: center; }
+            .print-btn { order: 3; flex-grow: 1; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-<!-- Search Header -->
 <div class="no-print" role="search">
     <div class="search-wrapper">
-        <label for="search" class="visually-hidden">Search Directory</label>
-        <input type="text" id="search" onkeyup="handleSearch()" placeholder="Search by name, department, position...">
-        <button id="clear-search" class="clear-btn" onclick="clearSearch()" aria-label="Reset search">✕</button>
+        <input type="text" id="search" onkeyup="handleSearch()" placeholder="Suchen...">
     </div>
-    <button onclick="window.print()" class="print-btn">Print / PDF</button>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Farbschema umschalten">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Dunkel</span>
+    </button>
+
+    <button onclick="window.print()" class="print-btn">
+        <span>🖨️</span> Drucken
+    </button>
 </div>
 
-<!-- Main content area -->
-<main id="directory" aria-label="Phone Directory"></main>
+<main id="directory"></main>
 
 <script>
     /* --- SVGs --- */
-    const ICON_PHONE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
-    const ICON_MOBILE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
-    const ICON_MAIL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`;
+    const ICON_PHONE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
+    const ICON_MOBILE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
+    const ICON_MAIL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`;
 
     /**
-     * Search Input Logic
+     * Theme Toggle Management
+     */
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        applyTheme(newTheme);
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+            icon.textContent = '☀️';
+            text.textContent = 'Hell';
+        } else {
+            icon.textContent = '🌙';
+            text.textContent = 'Dunkel';
+        }
+    }
+
+    // Initialize theme from local storage on load
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+
+    /**
+     * Search & Filter Logic
      */
     function handleSearch() {
-        const input = document.getElementById('search');
-        const clearBtn = document.getElementById('clear-search');
-        
-        // Toggle clear button visibility
-        clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
-        
-        filter(input.value.toLowerCase());
-    }
-
-    /**
-     * Clear Search Logic
-     */
-    function clearSearch() {
-        const input = document.getElementById('search');
-        input.value = "";
-        input.focus();
-        handleSearch(); 
-    }
-
-    /**
-     * Filter Display based on query
-     */
-    function filter(query) {
+        const query = document.getElementById('search').value.toLowerCase();
         const sections = document.querySelectorAll('.dept-section');
+        
         sections.forEach(section => {
             const cards = section.querySelectorAll('.contact-card');
-            let hasVisibleCards = false;
-
+            let hasVisible = false;
             cards.forEach(card => {
-                const isMatch = card.textContent.toLowerCase().includes(query);
-                card.style.display = isMatch ? "" : "none";
-                if (isMatch) hasVisibleCards = true;
+                const match = card.textContent.toLowerCase().includes(query);
+                card.style.display = match ? "" : "none";
+                if (match) hasVisible = true;
             });
-            section.style.display = hasVisibleCards ? "" : "none";
+            section.style.display = hasVisible ? "" : "none";
         });
     }
 
     /**
-     * DATA LOADING via PapaParse
+     * CSV Loading & Rendering
      */
     Papa.parse("data/kontakte.csv", {
         download: true,
         header: true,
         skipEmptyLines: true,
-        complete: function(results) {
-            renderDirectory(results.data);
-        },
-        error: () => { 
-            document.getElementById('directory').innerHTML = "Error loading CSV file. Please check path."; 
-        }
+        complete: function(results) { render(results.data); }
     });
 
-    /**
-     * RENDERING Logic
-     */
-    function renderDirectory(data) {
-        const directory = document.getElementById('directory');
-        directory.innerHTML = "";
+    function render(data) {
+        const main = document.getElementById('directory');
+        main.innerHTML = "";
 
-        // Basic validation and sorting by Department
         const validData = data.filter(p => p.Abteilung && p.Name);
         validData.sort((a, b) => a.Abteilung.localeCompare(b.Abteilung));
 
-        // Group data by Department
-        const grouped = validData.reduce((acc, person) => {
-            if (!acc[person.Abteilung]) acc[person.Abteilung] = [];
-            acc[person.Abteilung].push(person);
+        const grouped = validData.reduce((acc, p) => {
+            if (!acc[p.Abteilung]) acc[p.Abteilung] = [];
+            acc[p.Abteilung].push(p);
             return acc;
         }, {});
 
-        // Build HTML structure
         for (const dept in grouped) {
             const section = document.createElement('section');
             section.className = "dept-section";
@@ -314,44 +308,34 @@
             grid.className = "cards-grid";
 
             grouped[dept].forEach(p => {
+                // Determine category class from CSV ColorCode
                 const colorCls = p.ColorCode ? `cat-${p.ColorCode.toLowerCase().trim()}` : '';
                 const card = document.createElement('div');
                 card.className = `contact-card ${colorCls}`;
                 
-                /**
-                 * Helper to render rows with automated link creation
-                 * title attribute is added to links to show full text on hover
-                 */
-                const renderRow = (icon, val, type) => {
-                    if (!val || val.trim() === "" || val === "-") return "";
-                    
-                    let linkAttr = "";
-                    if (type === 'tel') linkAttr = `href="tel:${val.replace(/\s/g, '')}"`;
-                    if (type === 'mail') linkAttr = `href="mailto:${val.trim()}"`;
-
+                const createRow = (icon, val, type) => {
+                    if (!val || val === "-") return "";
+                    const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
                     return `
                         <div class="contact-row">
                             <span class="icon-container">${icon}</span>
                             <span class="value-container">
-                                <a ${linkAttr} class="contact-link" title="${val.trim()}">${val.trim()}</a>
+                                <a href="${link}" class="contact-link" title="${val}">${val}</a>
                             </span>
                         </div>`;
                 };
 
                 card.innerHTML = `
                     <h3>${p.Name}</h3>
-                    ${p.Position ? `<p class="job-position">${p.Position}</p>` : ''}
-                    <div class="card-body">
-                        ${renderRow(ICON_PHONE, p.Telefon, 'tel')}
-                        ${renderRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}
-                        ${renderRow(ICON_MAIL, p.Email, 'mail')}
-                    </div>
+                    <p class="job-position">${p.Position || ''}</p>
+                    ${createRow(ICON_PHONE, p.Telefon, 'tel')}
+                    ${createRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                    ${createRow(ICON_MAIL, p.Email, 'mail')}
                 `;
                 grid.appendChild(card);
             });
-
             section.appendChild(grid);
-            directory.appendChild(section);
+            main.appendChild(section);
         }
     }
 </script>
