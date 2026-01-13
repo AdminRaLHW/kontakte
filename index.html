@@ -33,14 +33,12 @@
         }
 
         [data-theme="dark"] {
-            /* Erhöhter Kontrast im Dark Mode */
-            --bg-body: #0a0a0a;       /* Etwas dunklerer Hintergrund */
-            --bg-panel: #2a2a2a;      /* Etwas helleres Panel für Abhebung */
+            --bg-body: #0a0a0a;
+            --bg-panel: #2a2a2a;
             --text-main: #ffffff;
             --text-muted: #bbbbbb;
-            --border-ui: #555555;      /* Deutlichere Linien */
+            --border-ui: #555555;
             --bg-opacity-area: 0.25;
-            
             --card-bg: #ffffff;
             --card-text: #000000;
             --card-text-muted: #444444;
@@ -53,6 +51,9 @@
             transition: background 0.3s, color 0.3s;
         }
 
+        /* --- PRINT ONLY ELEMENTS --- */
+        .print-only { display: none; }
+
         /* --- HEADER --- */
         .no-print {
             display: flex; flex-wrap: wrap; gap: 20px; align-items: center; 
@@ -61,11 +62,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
-        /* Spezifische Anpassung für Suchleiste im Dark Mode für besseren Kontrast */
-        [data-theme="dark"] input {
-            background: #1a1a1a;
-            border-color: #666666;
-        }
+        [data-theme="dark"] input { background: #1a1a1a; border-color: #666666; }
 
         .main-controls { display: flex; align-items: center; gap: 20px; flex: 1 1 500px; min-width: 0; }
         .logo { height: 45px; width: auto; filter: grayscale(1); transition: filter 0.3s; }
@@ -76,9 +73,7 @@
         input {
             width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-ui);
             background: var(--bg-body); color: var(--text-main); font-size: 1rem; outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        input:focus { border-color: var(--text-main); box-shadow: 0 0 0 2px rgba(128,128,128,0.2); }
 
         .action-controls { display: flex; gap: 10px; flex: 1 0 auto; }
         .theme-btn, .print-btn {
@@ -93,12 +88,17 @@
             margin-bottom: 50px; border-radius: 16px;
             background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area));
             border: 1px solid var(--border-ui); overflow: hidden;
+            /* Wichtig für Print-Farben */
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
         
         .bereich-header { 
             font-size: 1.4rem; text-transform: uppercase; margin: 0; padding: 18px 25px; 
             background-color: var(--accent); color: #ffffff;
             letter-spacing: 0.08em; font-weight: 800;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         .bereich-content { padding: 25px; }
@@ -106,32 +106,27 @@
         .abteilung-header {
             font-size: 1.15rem; color: var(--text-main); margin: 0 0 15px 0;
             display: flex; align-items: center; gap: 10px; font-weight: 700;
-            /* Indikator entfernt */
         }
 
         .cards-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); gap: 20px; 
         }
 
-        /* --- KONTAKTKARTE --- */
         .contact-card {
             background-color: var(--card-bg);
             border-left: 6px solid var(--accent);
             padding: 22px; border-radius: 12px; display: flex; flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-        .contact-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         
-        .contact-card h4 { margin: 0 0 5px 0; font-size: 1.25rem; color: var(--card-text); }
-        .job-position { color: var(--card-text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px; }
+        .contact-card h4 { margin: 0 0 5px 0; font-size: 1.25rem; color: #000; }
+        .job-position { color: #555; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px; }
         
         .contact-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
         .icon-container { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
-        .contact-link {
-            text-decoration: none; color: var(--card-text); font-size: 0.95rem;
-            transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .contact-link:hover { color: var(--accent); text-decoration: underline; }
+        .contact-link { text-decoration: none; color: #000; font-size: 0.95rem; }
 
         /* --- AKZENT-MAPPING --- */
         .cat-01 { --accent: var(--hex-01); } .cat-02 { --accent: var(--hex-02); }
@@ -142,19 +137,73 @@
         .cat-11 { --accent: var(--hex-11); } .cat-12 { --accent: var(--hex-12); }
         .cat-13 { --accent: var(--hex-13); }
 
-        .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+        .btn-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
+        /* --- PRINT STYLES --- */
         @media print {
             .no-print, .update-hint { display: none !important; }
-            body { background: white !important; }
-            .bereich-section { background: none !important; border: 1px solid #000 !important; padding: 0 !important; }
-            .bereich-header { background: #000 !important; color: white !important; -webkit-print-color-adjust: exact; }
-            .contact-card { border: 1px solid #ccc !important; border-left: 8px solid var(--accent) !important; break-inside: avoid; }
+            .print-only { display: block; }
+            
+            body { background: white !important; padding: 0; }
+            
+            /* Print Header Styling */
+            .print-header-container {
+                display: flex; justify-content: space-between; align-items: flex-start;
+                border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px;
+            }
+            .print-title h1 { margin: 0; font-size: 24pt; text-transform: uppercase; }
+            .print-title p { margin: 5px 0 0 0; font-size: 10pt; color: #555; }
+            .print-logo { height: 60px; }
+
+            /* Legende */
+            .print-legend {
+                display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+                margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 8px;
+            }
+            .legend-item { display: flex; align-items: center; gap: 8px; font-size: 9pt; font-weight: 600; }
+            .legend-color { width: 15px; height: 15px; border-radius: 3px; border: 1px solid #000; }
+
+            /* Seitenumbrüche */
+            .bereich-section { 
+                break-before: page; 
+                margin-bottom: 30px !important; 
+                border: 1px solid #ccc !important;
+            }
+            .bereich-section:first-of-type { break-before: auto; }
+            
+            .abteilung-group { 
+                break-inside: avoid; 
+                page-break-inside: avoid;
+            }
+            
+            .contact-card {
+                break-inside: avoid;
+                border: 1px solid #eee !important;
+                border-left: 6px solid var(--accent) !important;
+                box-shadow: none !important;
+            }
+
+            .bereich-header { padding: 10px 20px !important; font-size: 1.2rem !important; }
         }
     </style>
 </head>
 <body>
+
+<!-- Spezieller Header für den Ausdruck -->
+<div class="print-only">
+    <div class="print-header-container">
+        <div class="print-title">
+            <h1>Kontaktverzeichnis</h1>
+            <p id="print-date">Datenstand: --</p>
+        </div>
+        <img src="img/LHW Logo Trans.svg" alt="Logo" class="print-logo">
+    </div>
+    <div style="font-weight: bold; margin-bottom: 10px; font-size: 10pt;">Farbleitsystem / Bereiche:</div>
+    <div id="print-legend" class="print-legend">
+        <!-- Wird per JS gefüllt -->
+    </div>
+</div>
 
 <header class="no-print">
     <div class="main-controls">
@@ -167,19 +216,19 @@
         </div>
     </div>
     <div class="action-controls">
-        <button class="theme-btn" onclick="toggleTheme()" id="themeToggle" aria-live="polite">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeToggle">
             <svg id="sun-icon" class="btn-icon" style="display:none" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
             <svg id="moon-icon" class="btn-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
             <span id="theme-text">Dunkel</span>
         </button>
-        <button onclick="window.print()" class="print-btn" aria-label="Drucken">
+        <button onclick="window.print()" class="print-btn">
             <svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0v5h12v-5m-12-4h12"/></svg>
             Drucken
         </button>
     </div>
 </header>
 
-<div id="last-update" class="update-hint" aria-hidden="true"></div>
+<div id="last-update" class="update-hint"></div>
 <main id="directory"></main>
 
 <script>
@@ -191,7 +240,9 @@
             const lastMod = response.headers.get("Last-Modified");
             if (lastMod) {
                 const date = new Date(lastMod);
-                document.getElementById('last-update').textContent = `Datenstand: ${date.toLocaleDateString('de-DE')}`;
+                const dateString = `Datenstand: ${date.toLocaleDateString('de-DE')}`;
+                document.getElementById('last-update').textContent = dateString;
+                document.getElementById('print-date').textContent = dateString;
             }
         } catch (e) { console.warn("Datum nicht verfügbar."); }
     }
@@ -249,7 +300,10 @@
 
     function render(data) {
         const root = document.getElementById('directory');
+        const legendRoot = document.getElementById('print-legend');
         root.innerHTML = "";
+        legendRoot.innerHTML = "";
+
         const areaSortMap = {}; 
         const groupedData = data.reduce((acc, p) => {
             const b = (p.Bereich && p.Bereich.trim() !== "") ? p.Bereich : "Allgemein";
@@ -265,7 +319,15 @@
         const sortedBereiche = Object.keys(groupedData).sort((a, b) => areaSortMap[a] - areaSortMap[b]);
 
         sortedBereiche.forEach(bName => {
-            const sectionCode = areaSortMap[bName].toString().padStart(2, '0');
+            const codeNum = areaSortMap[bName];
+            const sectionCode = codeNum.toString().padStart(2, '0');
+            
+            // Legende für Print befüllen
+            const legItem = document.createElement('div');
+            legItem.className = 'legend-item';
+            legItem.innerHTML = `<div class="legend-color" style="background-color: var(--hex-${sectionCode})"></div><span>${bName}</span>`;
+            legendRoot.appendChild(legItem);
+
             const bereichSection = document.createElement('section');
             bereichSection.className = `bereich-section cat-${sectionCode}`;
             bereichSection.innerHTML = `<h2 class="bereich-header">${bName}</h2><div class="bereich-content"></div>`;
