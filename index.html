@@ -48,8 +48,16 @@
         body { 
             font-family: 'Segoe UI', system-ui, sans-serif; 
             padding: 20px; margin: 0; background: var(--bg-body); color: var(--text-main);
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, filter 0.3s;
         }
+
+        /* --- ACCESSIBILITY CLASSES (Wird per JS gesteuert) --- */
+        body.acc-grayscale { filter: grayscale(1) !important; }
+        body.acc-invert { filter: invert(1) hue-rotate(180deg) !important; }
+        body.acc-high-contrast { background: #000 !important; color: #fff !important; }
+        body.acc-high-contrast .contact-card { background: #000 !important; border: 2px solid #fff !important; color: #fff !important; }
+        body.acc-high-contrast .contact-link, body.acc-high-contrast h4 { color: #fff !important; }
+        body.acc-high-contrast .bereich-section { background: #111 !important; border: 1px solid #fff !important; }
 
         .print-only { display: none; }
 
@@ -146,19 +154,70 @@
 
         .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 
+        /* --- ACCESSIBILITY SIDEBAR STYLES --- */
+        .acc-toggle-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background-color: #2e7d32; color: white; border: none;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
+        .acc-toggle-btn:hover { transform: scale(1.1); }
+        .acc-toggle-btn svg { width: 32px; height: 32px; fill: white; }
+
+        .acc-sidebar {
+            position: fixed; top: 0; right: -350px; width: 320px; height: 100vh;
+            z-index: 1002; transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(15px) saturate(180%);
+            -webkit-backdrop-filter: blur(15px) saturate(180%);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            padding: 30px; display: flex; flex-direction: column; gap: 20px; color: #000;
+        }
+        [data-theme="dark"] .acc-sidebar { 
+            background: rgba(30, 30, 30, 0.75); color: #fff; 
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .acc-sidebar.open { right: 0; }
+
+        .acc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .close-acc { background: none; border: none; font-size: 2.5rem; cursor: pointer; color: inherit; line-height: 1; }
+
+        .acc-section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .acc-section label { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; opacity: 0.8; }
+        
+        .acc-slider { width: 100%; accent-color: #2e7d32; cursor: pointer; height: 8px; border-radius: 4px; }
+
+        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .acc-btn {
+            padding: 12px 8px; border: 1px solid var(--border-ui); border-radius: 8px;
+            background: var(--bg-panel); color: var(--text-main); cursor: pointer;
+            font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .acc-btn:hover { background: #2e7d32; color: white; border-color: #2e7d32; }
+        .acc-btn.active { border: 2px solid #2e7d32; background: rgba(46, 125, 50, 0.1); }
+
+        .acc-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            display: none; z-index: 1001; backdrop-filter: blur(2px);
+        }
+        .acc-overlay.show { display: block; }
+
         /* --- PRINT STYLES --- */
         @media print {
             @page { margin: 15mm; size: auto; }
-            .no-print, .update-hint { display: none !important; }
+            .no-print, .update-hint, .acc-toggle-btn, .acc-sidebar { display: none !important; }
             .print-only { display: block; }
-            body { background: white !important; padding: 0; margin: 0; }
+            body { background: white !important; padding: 0; margin: 0; filter: none !important; font-size: 10pt !important; }
             
             .print-cover { position: relative; height: 98vh; display: flex; flex-direction: column; justify-content: center; break-after: page; padding: 50px; }
             .cover-header { display: flex; align-items: center; gap: 30px; border-bottom: 4px solid #000; padding-bottom: 25px; margin-bottom: 60px; }
             .cover-header h1 { font-size: 32pt; margin: 0; text-transform: uppercase; font-weight: 900; white-space: nowrap; }
             .cover-logo { height: 70px; width: auto; }
 
-            /* Deckblatt Footer Aligned */
             .cover-footer { 
                 position: absolute; bottom: 40px; left: 50px; right: 50px;
                 border-top: 1px solid #000; padding-top: 15px;
@@ -197,7 +256,53 @@
 </head>
 <body>
 
-<!-- Titelseite & Legende -->
+<!-- Accessibility Overlay & Sidebar -->
+<div id="accOverlay" class="acc-overlay" onclick="toggleAccMenu()"></div>
+
+<button class="acc-toggle-btn" onclick="toggleAccMenu()" aria-label="Barrierefreiheit Menü öffnen">
+    <svg viewBox="0 0 24 24"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
+</button>
+
+<aside id="accSidebar" class="acc-sidebar" role="dialog" aria-labelledby="accTitle">
+    <div class="acc-header">
+        <h2 id="accTitle" style="margin:0; font-size: 1.2rem; font-weight: 800;">Barrierefreiheit</h2>
+        <button class="close-acc" onclick="toggleAccMenu()" aria-label="Schließen">&times;</button>
+    </div>
+
+    <div class="acc-section">
+        <label for="slider-font">Schriftgröße</label>
+        <input type="range" id="slider-font" class="acc-slider" min="0.8" max="1.4" step="0.05" value="1">
+    </div>
+
+    <div class="acc-section">
+        <label for="slider-line">Zeilenabstand</label>
+        <input type="range" id="slider-line" class="acc-slider" min="1" max="2" step="0.1" value="1.5">
+    </div>
+
+    <div class="acc-section">
+        <label for="slider-spacing">Zeichenabstand</label>
+        <input type="range" id="slider-spacing" class="acc-slider" min="0" max="4" step="0.5" value="0">
+    </div>
+
+    <hr style="width:100%; border: 0; border-top: 1px solid var(--border-ui); margin: 10px 0;">
+
+    <div class="acc-section">
+        <label>Anzeige-Modus</label>
+        <div class="theme-grid">
+            <button class="acc-btn" onclick="setAccTheme('default')" id="btn-def">Standard</button>
+            <button class="acc-btn" onclick="setAccTheme('grayscale')" id="btn-gray">Graustufen</button>
+            <button class="acc-btn" onclick="setAccTheme('invert')" id="btn-inv">Invertiert</button>
+            <button class="acc-btn" onclick="setAccTheme('high-contrast')" id="btn-high">Kontrast</button>
+        </div>
+    </div>
+
+    <button class="acc-btn" style="margin-top: auto; background: #8e24aa; color: white; border: none;" onclick="resetAcc()">
+        Zurücksetzen
+    </button>
+</aside>
+
+
+<!-- Titelseite & Legende (Druck) -->
 <div class="print-only">
     <div class="print-cover">
         <div class="cover-header">
@@ -211,7 +316,6 @@
             <div class="toc-title">Farbleitsystem & Bereiche</div>
             <div id="print-toc"></div>
         </div>
-        <!-- Fussnote Deckblatt -->
         <div class="cover-footer">
             <span style="font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">Lebenshilfswerk Waren gGmbH</span>
             <span id="print-footer-info"></span>
@@ -252,7 +356,7 @@
 <script>
     /* --- KONFIGURATION DER NAMEN --- */
     const CONFIG_NAMES = {
-        programmedBy: ["Dan Schneider"], // Mehrere Namen möglich
+        programmedBy: ["Dan Schneider"],
         maintainedBy: ["Simone Herzog, Gordon Kempf, Dan Schneider"]
     };
 
@@ -262,16 +366,13 @@
     const ICON_MOBILE = `<svg class="btn-icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`;
     const ICON_MAIL = `<svg class="btn-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`;
 
-// Footer-Texte generieren
+    // Footer-Texte generieren
     function setupFooters() {
         const prog = CONFIG_NAMES.programmedBy.join(", ");
         const maint = CONFIG_NAMES.maintainedBy.join(", ");
-        
-        // Wir nutzen <br> für den Umbruch und innerHTML statt textContent
-        const htmlContent = `gewartet von: ${maint}<br>entwickelt von: ${prog}`;
-        
-        document.getElementById('web-footer-info').innerHTML = htmlContent;
-        document.getElementById('print-footer-info').innerHTML = htmlContent;
+        const text = `gewartet von: ${maint}  entwickelt von: ${prog}`;
+        document.getElementById('web-footer-info').textContent = text;
+        document.getElementById('print-footer-info').textContent = text;
     }
     setupFooters();
 
@@ -310,6 +411,65 @@
         });
     }
 
+    /* --- ACCESSIBILITY LOGIC --- */
+    const sidebar = document.getElementById('accSidebar');
+    const overlay = document.getElementById('accOverlay');
+    let accSettings = JSON.parse(localStorage.getItem('lhw-acc-settings')) || {
+        fontSize: 1, lineHeight: 1.5, letterSpacing: 0, theme: 'default'
+    };
+
+    function toggleAccMenu() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    }
+
+    // Schließen mit Escape
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleAccMenu();
+    });
+
+    function setAccTheme(theme) {
+        accSettings.theme = theme;
+        applyAccSettings();
+    }
+
+    function applyAccSettings() {
+        document.body.style.fontSize = accSettings.fontSize + "rem";
+        document.body.style.lineHeight = accSettings.lineHeight;
+        document.body.style.letterSpacing = accSettings.letterSpacing + "px";
+
+        document.body.classList.remove('acc-grayscale', 'acc-invert', 'acc-high-contrast');
+        if(accSettings.theme !== 'default') document.body.classList.add('acc-' + accSettings.theme);
+
+        document.querySelectorAll('.acc-btn').forEach(b => b.classList.remove('active'));
+        const activeBtnId = { 'default': 'btn-def', 'grayscale': 'btn-gray', 'invert': 'btn-inv', 'high-contrast': 'btn-high' }[accSettings.theme];
+        document.getElementById(activeBtnId).classList.add('active');
+
+        localStorage.setItem('lhw-acc-settings', JSON.stringify(accSettings));
+    }
+
+    function resetAcc() {
+        accSettings = { fontSize: 1, lineHeight: 1.5, letterSpacing: 0, theme: 'default' };
+        document.getElementById('slider-font').value = 1;
+        document.getElementById('slider-line').value = 1.5;
+        document.getElementById('slider-spacing').value = 0;
+        applyAccSettings();
+    }
+
+    // Listeners for Sliders
+    document.getElementById('slider-font').addEventListener('input', e => { accSettings.fontSize = e.target.value; applyAccSettings(); });
+    document.getElementById('slider-line').addEventListener('input', e => { accSettings.lineHeight = e.target.value; applyAccSettings(); });
+    document.getElementById('slider-spacing').addEventListener('input', e => { accSettings.letterSpacing = e.target.value; applyAccSettings(); });
+
+    // Init Accessibility
+    window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('slider-font').value = accSettings.fontSize;
+        document.getElementById('slider-line').value = accSettings.lineHeight;
+        document.getElementById('slider-spacing').value = accSettings.letterSpacing;
+        applyAccSettings();
+    });
+
+    /* --- DATA RENDERING --- */
     Papa.parse(CSV_PATH, {
         download: true, header: true, skipEmptyLines: true,
         complete: (results) => render(results.data)
