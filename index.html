@@ -300,7 +300,7 @@
                 margin: 0 !important;
                 padding: 2cm !important;
                 min-height: 100vh; /* Sorgt dafür, dass die Farbe die ganze Seite füllt */
-                
+                border-radius: 0px;
                 /* Hintergrundfarbe erzwingen (die helle Variante) */
                 background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area)) !important;
                 
@@ -324,9 +324,10 @@
                 
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                margin-bottom: -2dvh !important; /* Verhindert zu großen Abstand nach unten */
             }
            
-            .abteilung-group { margin-bottom: 30px; break-inside: avoid; }
+            .abteilung-group { padding-top: 4dvh; break-inside: avoid; }
             /* 3. Karten-Styling für bessere Lesbarkeit auf farbigem Grund */
             .contact-card {
                 break-inside: avoid;
