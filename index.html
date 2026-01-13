@@ -9,15 +9,15 @@
 
     <style>
         :root {
-            --bg-opacity: 0.1;
+            --bg-opacity-area: 0.08; /* Sehr dezente Hintergrundfarbe für den Bereich */
             --card-min-width: 350px;
             --bg-body: #f4f7f9;
-            --bg-panel: #ffffff;
+            --bg-panel: #ffffff; /* Hintergrund der Karten (Weiß) */
             --text-main: #2c3e50;
             --text-muted: #64748b;
             --border-ui: #e2e8f0;
 
-            /* Category Colors */
+            /* Category HEX Colors */
             --hex-01: #81c784; --hex-02: #81c784; --hex-03: #ffa726;
             --hex-04: #ffa726; --hex-05: #4fc3f7; --hex-06: #1976d2;
             --hex-07: #1a237e; --hex-08: #00897b; --hex-09: #2e7d32;
@@ -32,7 +32,7 @@
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --border-ui: #334155;
-            --bg-opacity: 0.15;
+            --bg-opacity-area: 0.12;
         }
 
         * { box-sizing: border-box; }
@@ -42,101 +42,78 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* --- NAVIGATION BAR --- */
+        /* --- HEADER --- */
         .no-print {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-            padding: 15px 25px;
-            background: var(--bg-panel);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border-ui);
+            display: flex; flex-wrap: wrap; gap: 20px; align-items: center; 
+            padding: 15px 25px; background: var(--bg-panel); border-radius: 12px;
+            margin-bottom: 8px; border: 1px solid var(--border-ui);
         }
-
-        .main-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex: 1 1 500px;
-            min-width: 0;
-        }
-
-        .logo-link {
-            display: flex; align-items: center; flex-shrink: 0; transition: opacity 0.2s;
-        }
-        .logo-link:hover { opacity: 0.8; }
-        .logo-link:focus { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 4px; }
+        .main-controls { display: flex; align-items: center; gap: 20px; flex: 1 1 500px; min-width: 0; }
         .logo { height: 45px; width: auto; }
-
         .search-wrapper { flex-grow: 1; min-width: 150px; }
         input {
             width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-ui);
-            background: var(--bg-body); color: var(--text-main); font-size: 1rem;
-            outline: none; transition: border-color 0.2s;
+            background: var(--bg-body); color: var(--text-main); font-size: 1rem; outline: none;
         }
         input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px hsl(from var(--accent) h s l / 0.2); }
-
         .action-controls { display: flex; gap: 10px; flex: 1 0 auto; }
-
         .theme-btn, .print-btn {
             flex: 1; min-width: 130px; display: flex; align-items: center; justify-content: center; gap: 8px; 
             padding: 11px 18px; border-radius: 8px; border: 1px solid var(--border-ui); 
-            background: var(--bg-panel); color: var(--text-main); cursor: pointer; 
-            font-weight: 600; font-size: 0.9rem; transition: all 0.2s; white-space: nowrap;
+            background: var(--bg-panel); color: var(--text-main); cursor: pointer; font-weight: 600;
         }
+        .update-hint { text-align: right; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 30px; padding-right: 10px; font-style: italic; }
 
-        .theme-btn:hover, .print-btn:hover { background: var(--bg-body); border-color: var(--text-muted); }
-        .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
-
-        .update-hint {
-            text-align: right; font-size: 0.75rem; color: var(--text-muted);
-            margin-bottom: 30px; padding-right: 10px; font-style: italic;
+        /* --- BEREICHS-STYLING --- */
+        .bereich-section { 
+            margin-bottom: 40px;
+            padding: 30px;
+            border-radius: 20px;
+            /* Der Hintergrund wird über die Akzentfarbe des Bereichs gesteuert */
+            background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area));
+            border: 1px solid hsl(from var(--accent) h s l / 0.1);
         }
-
-        /* --- HIERARCHIE-STYLING --- */
-        .bereich-section { margin-bottom: 50px; }
         
         .bereich-header { 
-            font-size: 1.5rem; text-transform: uppercase; margin-bottom: 25px; 
-            padding-bottom: 10px; border-bottom: 3px solid var(--border-ui);
-            letter-spacing: 0.05em; color: var(--text-main);
+            font-size: 1.6rem; text-transform: uppercase; margin: 0 0 25px 0; 
+            padding-bottom: 10px; border-bottom: 3px solid var(--accent);
+            letter-spacing: 0.05em; 
+            color: var(--accent); /* Header in Akzentfarbe */
         }
 
-        .abteilung-group { margin-bottom: 35px; padding-left: 5px; }
-
+        .abteilung-group { margin-bottom: 30px; }
         .abteilung-header {
-            font-size: 1.15rem; color: var(--text-muted); margin: 0 0 15px 0;
-            display: flex; align-items: center; gap: 10px; font-weight: 600;
-        }
-        .abteilung-header::before {
-            content: ""; width: 15px; height: 2px; background: var(--accent); opacity: 0.5;
+            font-size: 1.15rem; color: var(--text-main); margin: 0 0 15px 0;
+            display: flex; align-items: center; gap: 10px; font-weight: 700;
         }
 
         .cards-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); gap: 20px; 
         }
 
-        /* --- KONTAKTKARTE --- */
+        /* --- KONTAKTKARTE (JETZT WEISS) --- */
         .contact-card {
-            background-color: hsl(from var(--accent) h s l / var(--bg-opacity));
+            background-color: var(--bg-panel); /* IMMER WEISS/PANEL-FARBE */
             border-left: 6px solid var(--accent);
-            padding: 20px; border-radius: 10px; display: flex; flex-direction: column;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s ease;
+            padding: 22px; border-radius: 12px; display: flex; flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .contact-card:hover { transform: translateY(-3px); }
-        .contact-card h4 { margin: 0 0 5px 0; font-size: 1.2rem; }
-        .job-position { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
-        .contact-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .icon-container { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
+        .contact-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .contact-card h4 { margin: 0 0 5px 0; font-size: 1.25rem; color: var(--text-main); }
+        .job-position { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; border-bottom: 1px solid var(--border-ui); padding-bottom: 10px; }
         
+        .contact-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .icon-container { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
         .contact-link {
-            text-decoration: none; color: inherit; font-size: 0.95rem;
+            text-decoration: none; color: var(--text-main); font-size: 0.95rem;
             transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .contact-link:hover, .contact-link:focus { color: var(--accent); text-decoration: underline; outline: none; }
+        .contact-link:hover { color: var(--accent); text-decoration: underline; }
 
+        /* --- FARB-MAPPING --- */
         .cat-01 { --accent: var(--hex-01); } .cat-02 { --accent: var(--hex-02); }
         .cat-03 { --accent: var(--hex-03); } .cat-04 { --accent: var(--hex-04); }
         .cat-05 { --accent: var(--hex-05); } .cat-06 { --accent: var(--hex-06); }
@@ -145,38 +122,36 @@
         .cat-11 { --accent: var(--hex-11); } .cat-12 { --accent: var(--hex-12); }
         .cat-13 { --accent: var(--hex-13); }
 
+        .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
         @media print {
             .no-print, .update-hint { display: none !important; }
-            body { background: white !important; padding: 0; }
-            .bereich-section { break-inside: avoid-page; }
-            .contact-card { background: white !important; border: 1px solid #ccc !important; border-left: 10px solid var(--accent) !important; break-inside: avoid; }
+            body { background: white !important; }
+            .bereich-section { background: none !important; border: none !important; padding: 0 !important; }
+            .contact-card { border: 1px solid #eee !important; border-left: 10px solid var(--accent) !important; break-inside: avoid; }
         }
-
-        @media (max-width: 768px) { .main-controls, .action-controls { flex-basis: 100%; } }
     </style>
 </head>
 <body>
 
 <header class="no-print">
     <div class="main-controls">
-        <a href="https://lebenshilfswerk-waren.de" class="logo-link" aria-label="Zur Startseite des Lebenshilfswerks Waren">
+        <a href="https://lebenshilfswerk-waren.de" class="logo-link" aria-label="Zur Startseite">
             <img src="img/LHW Logo Trans.svg" alt="LHW Logo" class="logo">
         </a>
         <div class="search-wrapper">
-            <label for="search" class="sr-only">Kontakte suchen</label>
-            <input type="text" id="search" onkeyup="handleSearch()" placeholder="Suche nach Name, Bereich, Abteilung..." aria-controls="directory">
+            <label for="search" class="sr-only">Suche</label>
+            <input type="text" id="search" onkeyup="handleSearch()" placeholder="Name, Bereich oder Abteilung suchen..." aria-controls="directory">
         </div>
     </div>
-    
     <div class="action-controls">
         <button class="theme-btn" onclick="toggleTheme()" id="themeToggle" aria-live="polite">
             <svg id="sun-icon" class="btn-icon" style="display:none" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
             <svg id="moon-icon" class="btn-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
             <span id="theme-text">Dunkel</span>
         </button>
-        <button onclick="window.print()" class="print-btn" aria-label="Liste drucken">
+        <button onclick="window.print()" class="print-btn" aria-label="Drucken">
             <svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0v5h12v-5m-12-4h12"/></svg>
             Drucken
         </button>
@@ -184,8 +159,7 @@
 </header>
 
 <div id="last-update" class="update-hint" aria-hidden="true"></div>
-
-<main id="directory" aria-label="Kontaktverzeichnis"></main>
+<main id="directory"></main>
 
 <script>
     const CSV_PATH = "data/kontakte.csv";
@@ -221,43 +195,29 @@
     }
     applyTheme(localStorage.getItem('dir-theme') || 'light');
 
-    /**
-     * ERWEITERTE SUCHE: Inkludiert Bereiche und Abteilungen
-     */
     function handleSearch() {
         const query = document.getElementById('search').value.toLowerCase();
-        
         document.querySelectorAll('.bereich-section').forEach(bereichSec => {
             const bereichHeader = bereichSec.querySelector('.bereich-header').textContent.toLowerCase();
             const bereichMatch = bereichHeader.includes(query);
-
             let bereichHasVisibleContent = false;
 
             bereichSec.querySelectorAll('.abteilung-group').forEach(abtGrp => {
                 const abtHeaderEl = abtGrp.querySelector('.abteilung-header');
                 const abtHeaderText = abtHeaderEl ? abtHeaderEl.textContent.toLowerCase() : "";
                 const abtMatch = abtHeaderText.includes(query);
-
                 let abtHasVisibleContent = false;
 
                 abtGrp.querySelectorAll('.contact-card').forEach(card => {
-                    const cardText = card.textContent.toLowerCase();
-                    const cardMatch = cardText.includes(query);
-
-                    // Karte anzeigen wenn: Bereich matcht ODER Abteilung matcht ODER Karte selbst matcht
+                    const cardMatch = card.textContent.toLowerCase().includes(query);
                     const isVisible = bereichMatch || abtMatch || cardMatch;
                     card.style.display = isVisible ? "" : "none";
-                    
                     if (isVisible) abtHasVisibleContent = true;
                 });
 
-                // Abteilung anzeigen wenn Überschrift matcht ODER sichtbare Karten enthalten sind
-                const showAbt = abtMatch || abtHasVisibleContent;
-                abtGrp.style.display = showAbt ? "" : "none";
-                if (showAbt) bereichHasVisibleContent = true;
+                abtGrp.style.display = (abtMatch || abtHasVisibleContent) ? "" : "none";
+                if (abtMatch || abtHasVisibleContent) bereichHasVisibleContent = true;
             });
-
-            // Bereich anzeigen wenn Überschrift matcht ODER sichtbare Abteilungen enthalten sind
             bereichSec.style.display = (bereichMatch || bereichHasVisibleContent) ? "" : "none";
         });
     }
@@ -286,12 +246,13 @@
         const sortedBereiche = Object.keys(groupedData).sort((a, b) => areaSortMap[a] - areaSortMap[b]);
 
         sortedBereiche.forEach(bName => {
+            const sectionCode = areaSortMap[bName].toString().padStart(2, '0');
             const bereichSection = document.createElement('section');
-            bereichSection.className = "bereich-section";
+            // Die Kategorie-Klasse (cat-XX) jetzt an die Sektion für den Hintergrund
+            bereichSection.className = `bereich-section cat-${sectionCode}`;
             bereichSection.innerHTML = `<h2 class="bereich-header">${bName}</h2>`;
 
             const sortedAbteilungen = Object.keys(groupedData[bName]).sort();
-
             sortedAbteilungen.forEach(aName => {
                 const abtGroup = document.createElement('div');
                 abtGroup.className = "abteilung-group";
@@ -300,15 +261,22 @@
                 grid.className = "cards-grid";
 
                 groupedData[bName][aName].sort((x,y) => x.Name.localeCompare(y.Name)).forEach(p => {
-                    const code = p.ColorCode ? p.ColorCode.toString().padStart(2, '0') : '01';
                     const card = document.createElement('div');
-                    card.className = `contact-card cat-${code}`;
+                    card.className = `contact-card`; // cat-Klasse nicht mehr nötig hier
+                    
                     const createRow = (icon, val, type) => {
                         if (!val || val === "-") return "";
                         const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
                         return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${val}</a></div>`;
                     };
-                    card.innerHTML = `<h4>${p.Name}</h4><div class="job-position">${p.Position || ''}</div>${createRow(ICON_PHONE, p.Telefon, 'tel')}${createRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}${createRow(ICON_MAIL, p.Email, 'mail')}`;
+
+                    card.innerHTML = `
+                        <h4>${p.Name}</h4>
+                        <div class="job-position">${p.Position || ''}</div>
+                        ${createRow(ICON_PHONE, p.Telefon, 'tel')}
+                        ${createRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                        ${createRow(ICON_MAIL, p.Email, 'mail')}
+                    `;
                     grid.appendChild(card);
                 });
                 abtGroup.appendChild(grid);
