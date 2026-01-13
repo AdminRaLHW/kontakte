@@ -17,6 +17,7 @@
             --text-muted: #64748b;
             --border-ui: #e2e8f0;
 
+            /* Category Colors */
             --hex-01: #81c784; --hex-02: #81c784; --hex-03: #ffa726;
             --hex-04: #ffa726; --hex-05: #4fc3f7; --hex-06: #1976d2;
             --hex-07: #1a237e; --hex-08: #00897b; --hex-09: #2e7d32;
@@ -41,7 +42,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* --- NAVIGATION BAR --- */
+        /* --- HEADER & NAVIGATION --- */
         .no-print {
             display: flex;
             flex-wrap: wrap;
@@ -50,7 +51,7 @@
             padding: 15px 25px;
             background: var(--bg-panel);
             border-radius: 12px;
-            margin-bottom: 8px; /* Reduziert für den Datums-Hinweis darunter */
+            margin-bottom: 8px;
             border: 1px solid var(--border-ui);
         }
 
@@ -63,20 +64,13 @@
         }
 
         .logo-link {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            transition: opacity 0.2s;
+            display: flex; align-items: center; flex-shrink: 0; transition: opacity 0.2s;
         }
         .logo-link:hover { opacity: 0.8; }
         .logo-link:focus { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 4px; }
         .logo { height: 45px; width: auto; }
 
-        .search-wrapper {
-            flex-grow: 1;
-            min-width: 150px;
-        }
-
+        .search-wrapper { flex-grow: 1; min-width: 150px; }
         input {
             width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-ui);
             background: var(--bg-body); color: var(--text-main); font-size: 1rem;
@@ -84,48 +78,47 @@
         }
         input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px hsl(from var(--accent) h s l / 0.2); }
 
-        /* DATUMS-HINWEIS RECHTSBÜNDIG */
         .update-hint {
-            text-align: right;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 30px; /* Abstand zum Directory-Grid */
-            padding-right: 10px;
-            font-style: italic;
+            text-align: right; font-size: 0.75rem; color: var(--text-muted);
+            margin-bottom: 30px; padding-right: 10px; font-style: italic;
         }
 
-        .action-controls {
-            display: flex;
-            gap: 10px;
-            flex: 1 0 auto;
-        }
+        .action-controls { display: flex; gap: 10px; flex: 1 0 auto; }
 
         .theme-btn, .print-btn {
-            flex: 1;
-            min-width: 130px;
-            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            flex: 1; min-width: 130px; display: flex; align-items: center; justify-content: center; gap: 8px; 
             padding: 11px 18px; border-radius: 8px; border: 1px solid var(--border-ui); 
             background: var(--bg-panel); color: var(--text-main); cursor: pointer; 
-            font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
-            white-space: nowrap;
+            font-weight: 600; font-size: 0.9rem; transition: all 0.2s; white-space: nowrap;
         }
 
         .theme-btn:hover, .print-btn:hover { background: var(--bg-body); border-color: var(--text-muted); }
-        .theme-btn:focus, .print-btn:focus { outline: 3px solid var(--accent); outline-offset: 2px; }
-
         .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 
-        /* --- DIRECTORY --- */
-        .dept-section { margin-bottom: 40px; }
-        .section-header { 
-            font-size: 1.25rem; text-transform: uppercase; margin-bottom: 20px; 
-            padding-bottom: 8px; border-bottom: 2px solid var(--border-ui);
-            letter-spacing: 0.05em;
+        /* --- HIERARCHICAL STRUCTURE --- */
+        .bereich-section { margin-bottom: 50px; }
+        
+        .bereich-header { 
+            font-size: 1.5rem; text-transform: uppercase; margin-bottom: 25px; 
+            padding-bottom: 10px; border-bottom: 3px solid var(--border-ui);
+            letter-spacing: 0.05em; color: var(--text-main);
         }
+
+        .abteilung-group { margin-bottom: 30px; padding-left: 5px; }
+
+        .abteilung-header {
+            font-size: 1.1rem; color: var(--text-muted); margin: 0 0 15px 0;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .abteilung-header::before {
+            content: ""; width: 12px; height: 2px; background: var(--border-ui);
+        }
+
         .cards-grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); gap: 20px; 
         }
 
+        /* --- CONTACT CARD --- */
         .contact-card {
             background-color: hsl(from var(--accent) h s l / var(--bg-opacity));
             border-left: 6px solid var(--accent);
@@ -133,7 +126,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s ease;
         }
         .contact-card:hover { transform: translateY(-3px); }
-        .contact-card h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
+        .contact-card h4 { margin: 0 0 5px 0; font-size: 1.2rem; }
         .job-position { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
         .contact-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .icon-container { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); }
@@ -144,11 +137,10 @@
         }
         .contact-link:hover, .contact-link:focus { color: var(--accent); text-decoration: underline; outline: none; }
 
-        .sr-only {
-            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-            overflow: hidden; clip: rect(0,0,0,0); border: 0;
-        }
+        /* Helpers */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
+        /* Color Codes */
         .cat-01 { --accent: var(--hex-01); } .cat-02 { --accent: var(--hex-02); }
         .cat-03 { --accent: var(--hex-03); } .cat-04 { --accent: var(--hex-04); }
         .cat-05 { --accent: var(--hex-05); } .cat-06 { --accent: var(--hex-06); }
@@ -160,16 +152,11 @@
         @media print {
             .no-print, .update-hint { display: none !important; }
             body { background: white !important; padding: 0; }
-            .contact-card {
-                background: white !important; border: 1px solid #ccc !important;
-                border-left: 10px solid var(--accent) !important;
-                break-inside: avoid; -webkit-print-color-adjust: exact;
-            }
+            .bereich-section { break-inside: avoid-page; }
+            .contact-card { background: white !important; border: 1px solid #ccc !important; border-left: 10px solid var(--accent) !important; break-inside: avoid; }
         }
 
-        @media (max-width: 768px) {
-            .main-controls, .action-controls { flex-basis: 100%; }
-        }
+        @media (max-width: 768px) { .main-controls, .action-controls { flex-basis: 100%; } }
     </style>
 </head>
 <body>
@@ -179,20 +166,17 @@
         <a href="https://lebenshilfswerk-waren.de" class="logo-link" aria-label="Zur Startseite des Lebenshilfswerks Waren">
             <img src="img/LHW Logo Trans.svg" alt="LHW Logo" class="logo">
         </a>
-
         <div class="search-wrapper">
             <label for="search" class="sr-only">Kontakte suchen</label>
-            <input type="text" id="search" onkeyup="handleSearch()" placeholder="Name, Abteilung, Position..." aria-controls="directory">
+            <input type="text" id="search" onkeyup="handleSearch()" placeholder="Name, Bereich, Abteilung oder Position suchen..." aria-controls="directory">
         </div>
     </div>
-
     <div class="action-controls">
         <button class="theme-btn" onclick="toggleTheme()" id="themeToggle" aria-live="polite">
             <svg id="sun-icon" class="btn-icon" style="display:none" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
             <svg id="moon-icon" class="btn-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
             <span id="theme-text">Dunkel</span>
         </button>
-
         <button onclick="window.print()" class="print-btn" aria-label="Liste drucken">
             <svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0v5h12v-5m-12-4h12"/></svg>
             Drucken
@@ -200,7 +184,6 @@
     </div>
 </header>
 
-<!-- Letzte Änderung: Rechtsbündig unter dem Header -->
 <div id="last-update" class="update-hint" aria-hidden="true"></div>
 
 <main id="directory" aria-label="Kontaktverzeichnis"></main>
@@ -208,19 +191,15 @@
 <script>
     const CSV_PATH = "data/kontakte.csv";
 
-    /* Datum abrufen */
     async function fetchLastModified() {
         try {
             const response = await fetch(CSV_PATH, { method: 'HEAD' });
             const lastMod = response.headers.get("Last-Modified");
             if (lastMod) {
                 const date = new Date(lastMod);
-                const formattedDate = date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                document.getElementById('last-update').textContent = `Datenstand: ${formattedDate}`;
+                document.getElementById('last-update').textContent = `Datenstand: ${date.toLocaleDateString('de-DE')}`;
             }
-        } catch (e) {
-            console.warn("Änderungsdatum nicht verfügbar.");
-        }
+        } catch (e) { console.warn("Datum nicht verfügbar."); }
     }
     fetchLastModified();
 
@@ -243,16 +222,31 @@
     }
     applyTheme(localStorage.getItem('dir-theme') || 'light');
 
+    /**
+     * Erweiterte Suchfunktion für hierarchische Strukturen
+     */
     function handleSearch() {
         const query = document.getElementById('search').value.toLowerCase();
-        document.querySelectorAll('.dept-section').forEach(sec => {
-            let visible = 0;
-            sec.querySelectorAll('.contact-card').forEach(card => {
-                const match = card.textContent.toLowerCase().includes(query);
-                card.style.display = match ? "" : "none";
-                if(match) visible++;
+        
+        document.querySelectorAll('.bereich-section').forEach(bereichSec => {
+            let bereichHasVisibleContacts = false;
+
+            bereichSec.querySelectorAll('.abteilung-group').forEach(abtGrp => {
+                let abtHasVisibleContacts = false;
+
+                abtGrp.querySelectorAll('.contact-card').forEach(card => {
+                    const match = card.textContent.toLowerCase().includes(query);
+                    card.style.display = match ? "" : "none";
+                    if (match) abtHasVisibleContacts = true;
+                });
+
+                // Abteilung ausblenden, wenn keine Karten darin sichtbar sind
+                abtGrp.style.display = abtHasVisibleContacts ? "" : "none";
+                if (abtHasVisibleContacts) bereichHasVisibleContacts = true;
             });
-            sec.style.display = visible > 0 ? "" : "none";
+
+            // Bereich ausblenden, wenn keine einzige Abteilung darin sichtbar ist
+            bereichSec.style.display = bereichHasVisibleContacts ? "" : "none";
         });
     }
 
@@ -264,35 +258,67 @@
     function render(data) {
         const root = document.getElementById('directory');
         root.innerHTML = "";
-        const sorted = data.filter(p => p.Abteilung && p.Name).sort((a,b) => a.Abteilung.localeCompare(b.Abteilung));
-        const groups = sorted.reduce((acc, p) => {
-            acc[p.Abteilung] = acc[p.Abteilung] || [];
-            acc[p.Abteilung].push(p);
+
+        // 1. Gruppierung nach Bereich und Abteilung
+        const groupedData = data.reduce((acc, p) => {
+            const b = (p.Bereich && p.Bereich.trim() !== "") ? p.Bereich : "Allgemein";
+            const a = (p.Abteilung && p.Abteilung.trim() !== "") ? p.Abteilung : "_NO_DEPT_";
+            
+            if (!acc[b]) acc[b] = {};
+            if (!acc[b][a]) acc[b][a] = [];
+            acc[b][a].push(p);
             return acc;
         }, {});
 
-        for (const dept in groups) {
-            const section = document.createElement('section');
-            section.className = "dept-section";
-            section.innerHTML = `<h2 class="section-header">${dept}</h2>`;
-            const grid = document.createElement('div');
-            grid.className = "cards-grid";
+        // 2. Sortierte Ausgabe
+        const sortedBereiche = Object.keys(groupedData).sort();
 
-            groups[dept].forEach(p => {
-                const code = p.ColorCode ? p.ColorCode.toString().padStart(2, '0') : '01';
-                const card = document.createElement('div');
-                card.className = `contact-card cat-${code}`;
-                const createRow = (icon, val, type) => {
-                    if (!val || val === "-") return "";
-                    const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
-                    return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link" title="${val}">${val}</a></div>`;
-                };
-                card.innerHTML = `<h3>${p.Name}</h3><div class="job-position">${p.Position || ''}</div>${createRow(ICON_PHONE, p.Telefon, 'tel')}${createRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}${createRow(ICON_MAIL, p.Email, 'mail')}`;
-                grid.appendChild(card);
+        sortedBereiche.forEach(bName => {
+            const bereichSection = document.createElement('section');
+            bereichSection.className = "bereich-section";
+            bereichSection.innerHTML = `<h2 class="bereich-header">${bName}</h2>`;
+
+            const sortedAbteilungen = Object.keys(groupedData[bName]).sort();
+
+            sortedAbteilungen.forEach(aName => {
+                const abtGroup = document.createElement('div');
+                abtGroup.className = "abteilung-group";
+                
+                // Falls Abteilung existiert, Header hinzufügen
+                if (aName !== "_NO_DEPT_") {
+                    abtGroup.innerHTML = `<h3 class="abteilung-header">${aName}</h3>`;
+                }
+
+                const grid = document.createElement('div');
+                grid.className = "cards-grid";
+
+                groupedData[bName][aName].forEach(p => {
+                    const code = p.ColorCode ? p.ColorCode.toString().padStart(2, '0') : '01';
+                    const card = document.createElement('div');
+                    card.className = `contact-card cat-${code}`;
+                    
+                    const createRow = (icon, val, type) => {
+                        if (!val || val === "-") return "";
+                        const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
+                        return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${val}</a></div>`;
+                    };
+
+                    card.innerHTML = `
+                        <h4>${p.Name}</h4>
+                        <div class="job-position">${p.Position || ''}</div>
+                        ${createRow(ICON_PHONE, p.Telefon, 'tel')}
+                        ${createRow(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                        ${createRow(ICON_MAIL, p.Email, 'mail')}
+                    `;
+                    grid.appendChild(card);
+                });
+
+                abtGroup.appendChild(grid);
+                bereichSection.appendChild(abtGroup);
             });
-            section.appendChild(grid);
-            root.appendChild(section);
-        }
+
+            root.appendChild(bereichSection);
+        });
     }
 </script>
 </body>

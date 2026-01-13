@@ -1,43 +1,48 @@
-Name;Abteilung;ColorCode;Position;Telefon;Mobiltelefon;Email
-Simone Herzog;Verwaltung;01;Zentrale;03991 61157-0;;herzog@lebenshilfswerk-waren.de
-Matthias Worner;Verwaltung;01;Zentrale;03991 61157-0;;worner@lebenshilfswerk-waren.de
-Anke Koth;Geschäftsführung;02;Geschäftsführung;03991 61157-102;;koth@lebenshilfswerk-waren.de
-Torsten Rassmann;Werkstattleitung;02;Handwerk & Arbeitsschutz;03991 61157-104;;rassmann@lebenshilfswerk-waren.de
-David Wülferling;Werkstattleitung;02;Liegenschaften & Finanzen;03991 61157-103;;wuelferling@lebenshilfswerk-waren.de
-Tobias Rödger;Werkstattleitung;02;Hotel, Gärtnerei & Entgelte;03991 61157-105;;roedger@lebenshilfswerk-waren.de
-Andrea Scharnowski;Verwaltungsleitung;02;Bereichsleitung integr. Kitas;03991 61157-109;;andreascharnowski@lebenshilfswerk-waren.de
-Gordon Kempf;Verwaltung;01;Koordination für Digitales / IT / Leistungsabrechnung;03991 61157-125;;kempf@lebenshilfswerk-waren.de
-Dan Schneider;Verwaltung;01;Koordination für Digitales / IT;03991 61157-325;;dan.schneider@lebenshilfswerk-waren.de
-Simone Görs;Verwaltung;01;Personalabrechnung & Lohnbuchhaltung;03991 61157-143;;goers@lebenshilfswerk-waren.de
-Sandra Rienaß;Verwaltung;01;Personalabrechnung & Lohnbuchhaltung;03991 61157-143;;rienass@lebenshilfswerk-waren.de
-Beate Schröder;Verwaltung;01;Leistungsträgerabrechnung & Weiterbildung;03991 61157-124;;beateschroeder@lebenshilfswerk-waren.de
-Manuela Griesbach;Finanzbuchhaltung;01;Finanzbuchhaltung;03991 61157-107;;griesbach@lebenshilfswerk-waren.de
-Anna Graubmann;Finanzbuchhaltung;01;Finanzbuchhaltung;03991 61157-117;;graubmann@lebenshilfswerk-waren.de
-Steffi Fronz;Liegenschaften;04;Finanzbuchhaltung;03991 61157-128;;fronz@lebenshilfswerk-waren.de
-Doreen Timm;Berufsbildungsbereich;05;Teamleitung Berufsbildungsbereich;03991 61157-315;;timm@lebenshilfswerk-waren.de
-Claudia Oeler;Berufsbildungsbereich;05;Berufsbildungsbereich;03991 61157-315;;oeler@lebenshilfswerk-waren.de
-Sandra Scherer-Schulz;Sozialer Dienst;06;Sozialer Dienst;03991 61157-300;;scherer@lebenshilfswerk-waren.de
-Mandy Knecht;Sozialer Dienst;06;Sozialer Dienst;03991 61157-311;;knecht@lebenshilfswerk-waren.de
-Kirsten Boddin;Sozialer Dienst;06;Sozialer Dienst;03991 61157-312;;boddin@lebenshilfswerk-waren.de
-Peggy Leddermann-Lobjinski;Assitenz in der eigenen Wohnung;10;AeW - Assistenz in der eigenen Wohnung;03991 61157-305;;betreuteswohnen@lebenshilfswerk-waren.de
-Liane Ahrens;Frühförderung;10;Mobile Frühförderung;03991 61157-430;;fruehfoerderung@lebenshilfswerk-waren.de
-Regina Gantzer;Kita;12;Leiterin Kita Lütt Matten;03991 167204;;kindergarten@lebenshilfswerk-waren.de
-Ute Manteufel;Kita;12;Leiterin Kita Buntes Leben;03981 442365;;kindergarten-nst@lebenshilfswerk-waren.de
-Jörg Hennings;Küche;07;Großküche;03991 61157-110;;kueche@lebenshilfswerk-waren.de
-Nicole Gebus;Kantine;07;Sünnerbar;03991 61157-154;;kantine@lebenshilfswerk-waren.de
-Silke Gailus;Laden & Café;07;andelinn;03991 61157-204;;andelinn@lebenshilfswerk-waren.de
-Mandy Gäth;Wäscherei;07;Wäscherei und Textilreinigung;03991 61157-313;;waescherei@lebenshilfswerk-waren.de
-Jan Kujus;Montage;07;Montage 1 & 2;03991 61157-201;;montage@lebenshilfswerk-waren.de
-Jan Ansorge;Montage;07;Montage Gievitzer Straße 1a;03991 61157-411;;montage1a@lebenshilfswerk-waren.de
-Michael Scharnowski;Werkstatt;07;Tischlerei & Rahmenwerkstatt;03991 61157-420;;tischlerei@lebenshilfswerk-waren.de
-Petra Lauermann;Werkstatt;07;Textil & Kerzenmanufaktur;03991 61157-330;;textil@lebenshilfswerk-waren.de
-Christiane Wörner-Roloff;Werkstatt;07;Keramikmanufaktur;03991 61157-314;;keramik@lebenshilfswerk-waren.de
-Cathleen Lasarzik;Hotel;08;Hotelleitung Hotel Am Tiefwarensee;03991 7475-100;;c.lasarzik@hotel-am-tiefwarensee.de
-André Neitzel;Müritzhof;09;Landschaftspflegehof Müritzhof;03991 61154-0;;mueritzhof@lebenshilfswerk-waren.de
-Stefan Fuhrmann;Gärtnerei;09;Gärtnerei & Schaugarten;03991 125641;;s.fuhrmann@lebenshilfswerk-waren.de
-Hans-Jürgen Stelter;Gärtnerei;09;Bereichsleitung Gärtnerei Schwenzin;03991 122513;;gaertnereischwenzin@lebenshilfswerk-waren.de
-Heike Schattenberg;Tagesgruppen;13;Teamleiterin Tagesgruppe Gievitzer Str.;03991 61157-516;;tagesgruppe@lebenshilfswerk-waren.de
-Vivien Täge;Tagesgruppen;13;Teamleiterin Tagesgruppe Teschenberg;03991 18168-90;;tagesgruppe-teschenberg@lebenshilfswerk-waren.de
-Silvana Steglich;Tagesgruppen;13;Teamleiterin Tagesförderstätte Neustrelitz;03981 4899396;;tagesstaette-nst@lebenshilfswerk-waren.de
-Doreen Wagner;Wohnen;11;Leiterin Haus am Kietz;03991 7473519;;doreen.wagner@lebenshilfswerk-waren.de
-Heike Gründig;Wohnen;11;Leiterin Haus am Teschenberg;03991 181681;;gruendig@lebenshilfswerk-waren.de
+Name;Bereich;Abteilung;ColorCode;Position;Telefon;Mobiltelefon;Email
+Simone Herzog;Verwaltung;Telefonzentrale;01;;03991 61157-0;;herzog@lebenshilfswerk-waren.de
+Matthias Worner;Verwaltung;Poststelle, Hauptkasse, Bürobedarf;01;;03991 61157-0;;worner@lebenshilfswerk-waren.de
+Anke Koth;Verwaltung;Geschäftsführung;01;Geschäftsführerin;03991 61157-102;;koth@lebenshilfswerk-waren.de
+Torsten Rassmann;Verwaltung;Werkstattleitung;01;Handwerk & Arbeitsschutz;03991 61157-104;;rassmann@lebenshilfswerk-waren.de
+David Wülferling;Verwaltung;Werkstattleitung;01;Liegenschaften & Finanzen;03991 61157-103;;wuelferling@lebenshilfswerk-waren.de
+Tobias Rödger;Verwaltung;Geschäftsführung;01;Entgelte;;;
+Tobias Rödger;Verwaltung;Werkstattleitung;01;Hotel, Gärtnerei;03991 61157-105;;roedger@lebenshilfswerk-waren.de
+Andrea Scharnowski;Verwaltung;Werkstattleitung;01;Bereichsleitung integr. Kitas;03991 61157-109;;andreascharnowski@lebenshilfswerk-waren.de
+Andrea Scharnowski;Verwaltung;Geschäftsführung;01;Verwaltungsleiterin;;;
+Gordon Kempf;Verwaltung;Leistungsabrechnung;01;;;;
+Gordon Kempf;Verwaltung;IT & Medien;01;Öffentlichkeitsarbeit, Redaktion, Micos Koordinator;03991 61157-125;;kempf@lebenshilfswerk-waren.de
+Dan Schneider;Verwaltung;IT & Medien;01;Koordination für Digitales / IT / Medien;03991 61157-325;;dan.schneider@lebenshilfswerk-waren.de
+Simone Görs;Verwaltung;Personal & Lohn;01;HR Management;03991 61157-143;;goers@lebenshilfswerk-waren.de
+Sandra Rienaß;Verwaltung;Personal & Lohn;01;HR & Qualitäts-Management;03991 61157-143;;rienass@lebenshilfswerk-waren.de
+Beate Schröder;Verwaltung;Leistungsabrechnung;01;Leistungsträgerabrechnung & Weiterbildung;03991 61157-124;;beateschroeder@lebenshilfswerk-waren.de
+Manuela Griesbach;Verwaltung;Finanzbuchhaltung;01;Debitoren, OPC Administratorin;03991 61157-107;;griesbach@lebenshilfswerk-waren.de
+Anna Graubmann;Verwaltung;Finanzbuchhaltung;01;Kreditoren (Lieferanten);03991 61157-117;;graubmann@lebenshilfswerk-waren.de
+Steffi Fronz;Verwaltung;Liegenschaften & Fuhrpark;01;;03991 61157-128;;fronz@lebenshilfswerk-waren.de
+Doreen Timm;Berufsbildungsbereich;;05;Teamleitung ;03991 61157-315;;timm@lebenshilfswerk-waren.de
+Claudia Oeler;Berufsbildungsbereich;;05;Praktikumsbetreuung;03991 61157-315;;oeler@lebenshilfswerk-waren.de
+Sandra Scherer-Schulz;Sozialer Dienst;;06;;03991 61157-300;;scherer@lebenshilfswerk-waren.de
+Mandy Knecht;Sozialer Dienst;;06;;03991 61157-311;;knecht@lebenshilfswerk-waren.de
+Kirsten Boddin;Sozialer Dienst;;06;Sozialer Dienst;03991 61157-312;;boddin@lebenshilfswerk-waren.de
+Peggy Leddermann-Lobjinski;;Assitenz in der eigenen Wohnung;10;AeW - Assistenz in der eigenen Wohnung;03991 61157-305;;betreuteswohnen@lebenshilfswerk-waren.de
+Liane Ahrens;;Frühförderung;10;Mobile Frühförderung;03991 61157-430;;fruehfoerderung@lebenshilfswerk-waren.de
+Regina Gantzer;Kindertagesstätten;Lütt Matten - Waren;12;Leitung;03991 167204;;kindergarten@lebenshilfswerk-waren.de
+Britta Havekost;Kindertagesstätten;Lütt Matten - Waren;12;stellv. Leitung;;;
+Ute Manteufel;Kindertagesstätten;Buntes Leben Neustrelitz;12;Leitung;03981 442365;;kindergarten-nst@lebenshilfswerk-waren.de
+Nadine Hass;Kindertagesstätten;Buntes Leben Neustrelitz;12;stellv. Leitung;;;
+Jörg Hennings;;Küche;07;Großküche;03991 61157-110;;kueche@lebenshilfswerk-waren.de
+Nicole Gebus;;Kantine;07;Sünnerbar;03991 61157-154;;kantine@lebenshilfswerk-waren.de
+Silke Gailus;;Laden & Café;07;andelinn;03991 61157-204;;andelinn@lebenshilfswerk-waren.de
+Mandy Gäth;;Wäscherei;07;Wäscherei und Textilreinigung;03991 61157-313;;waescherei@lebenshilfswerk-waren.de
+Jan Kujus;;Montage;07;Montage 1 & 2;03991 61157-201;;montage@lebenshilfswerk-waren.de
+Jan Ansorge;;Montage;07;Montage Gievitzer Straße 1a;03991 61157-411;;montage1a@lebenshilfswerk-waren.de
+Michael Scharnowski;;Werkstatt;07;Tischlerei & Rahmenwerkstatt;03991 61157-420;;tischlerei@lebenshilfswerk-waren.de
+Petra Lauermann;;Werkstatt;07;Textil & Kerzenmanufaktur;03991 61157-330;;textil@lebenshilfswerk-waren.de
+Christiane Wörner-Roloff;;Werkstatt;07;Keramikmanufaktur;03991 61157-314;;keramik@lebenshilfswerk-waren.de
+Cathleen Lasarzik;;Hotel;08;Hotelleitung Hotel Am Tiefwarensee;03991 7475-100;;c.lasarzik@hotel-am-tiefwarensee.de
+André Neitzel;;Müritzhof;09;Landschaftspflegehof Müritzhof;03991 61154-0;;mueritzhof@lebenshilfswerk-waren.de
+Stefan Fuhrmann;;Gärtnerei;09;Gärtnerei & Schaugarten;03991 125641;;s.fuhrmann@lebenshilfswerk-waren.de
+Hans-Jürgen Stelter;;Gärtnerei;09;Bereichsleitung Gärtnerei Schwenzin;03991 122513;;gaertnereischwenzin@lebenshilfswerk-waren.de
+Heike Schattenberg;;Tagesgruppen;13;Teamleiterin Tagesgruppe Gievitzer Str.;03991 61157-516;;tagesgruppe@lebenshilfswerk-waren.de
+Vivien Täge;;Tagesgruppen;13;Teamleiterin Tagesgruppe Teschenberg;03991 18168-90;;tagesgruppe-teschenberg@lebenshilfswerk-waren.de
+Silvana Steglich;;Tagesgruppen;13;Teamleiterin Tagesförderstätte Neustrelitz;03981 4899396;;tagesstaette-nst@lebenshilfswerk-waren.de
+Doreen Wagner;;Wohnen;11;Leiterin Haus am Kietz;03991 7473519;;doreen.wagner@lebenshilfswerk-waren.de
+Heike Gründig;;Wohnen;11;Leiterin Haus am Teschenberg;03991 181681;;gruendig@lebenshilfswerk-waren.de
