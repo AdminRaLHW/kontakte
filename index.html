@@ -106,9 +106,16 @@
 
         /* --- WEB FOOTER --- */
         .web-footer {
-            max-width: 100%; margin-top: 80px; padding: 25px 40px; border-top: 1px solid var(--border-ui);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.85rem; color: var(--text-muted); background: var(--bg-panel);
+            max-width: 100%; 
+            margin-top: 80px; 
+            padding: 25px 40px; 
+            border-top: 1px solid var(--border-ui);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            background: var(--bg-panel);
         }
 
         /* --- BEREICHS-STYLING --- */
@@ -325,8 +332,8 @@
     <main id="directory"></main>
 
     <footer class="no-print web-footer">
-        <div style="font-weight: 800; text-transform: uppercase;">Lebenshilfswerk Waren gGmbH</div>
-        <div id="web-footer-info"></div>
+        <div style="font-weight: 800;">Lebenshilfswerk Waren gGmbH</div>
+        <div id="web-footer-info" style="text-align: right; line-height: 1.4;"></div>
     </footer>
 
 </div> <!-- Ende app-wrapper -->
@@ -343,9 +350,20 @@
     const ICON_MAIL = `<svg class="btn-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`;
 
     function setupFooters() {
-        const text = `gewartet von: ${CONFIG_NAMES.maintainedBy.join(", ")}  entwickelt von: ${CONFIG_NAMES.programmedBy.join(", ")}`;
-        document.getElementById('web-footer-info').textContent = text;
-        document.getElementById('print-footer-info').textContent = text;
+        const maintained = `gewartet von: ${CONFIG_NAMES.maintainedBy.join(", ")}`;
+        const programmed = `entwickelt von: ${CONFIG_NAMES.programmedBy.join(", ")}`;
+        
+        // Web Footer mit Zeilenumbruch (untereinander)
+        const webFooter = document.getElementById('web-footer-info');
+        if (webFooter) {
+            webFooter.innerHTML = `${maintained}<br>${programmed}`;
+        }
+
+        // Print Footer (bleibt einzeilig für das Deckblatt)
+        const printFooter = document.getElementById('print-footer-info');
+        if (printFooter) {
+            printFooter.textContent = `${maintained} | ${programmed}`;
+        }
     }
     setupFooters();
 
