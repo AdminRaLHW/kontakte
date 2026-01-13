@@ -130,15 +130,18 @@
 
         /* --- PRINT STYLES --- */
         @media print {
+            @page { margin: 15mm; }
             .no-print, .update-hint { display: none !important; }
             .print-only { display: block; }
             body { background: white !important; padding: 0; }
             
-            .print-cover { height: 98vh; display: flex; flex-direction: column; justify-content: center; break-after: page; padding: 50px; }
-            .cover-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid #000; padding-bottom: 20px; margin-bottom: 60px; }
-            .cover-header h1 { font-size: 38pt; margin: 0; text-transform: uppercase; font-weight: 900; }
-            .cover-logo { height: 80px; }
+            /* Cover Design */
+            .print-cover { height: 95vh; display: flex; flex-direction: column; justify-content: center; break-after: page; padding: 50px; }
+            .cover-header { display: flex; align-items: center; gap: 30px; border-bottom: 4px solid #000; padding-bottom: 25px; margin-bottom: 60px; }
+            .cover-header h1 { font-size: 32pt; margin: 0; text-transform: uppercase; font-weight: 900; white-space: nowrap; }
+            .cover-logo { height: 70px; width: auto; }
 
+            /* Inhaltsverzeichnis Reparatur */
             .toc-container { margin-top: 40px; }
             .toc-title { font-size: 18pt; font-weight: bold; margin-bottom: 30px; border-bottom: 1px solid #000; padding-bottom: 10px; }
             .toc-item { display: flex; align-items: center; margin-bottom: 12px; font-size: 12pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -147,23 +150,45 @@
             .toc-dots { flex-grow: 1; border-bottom: 2px dotted #ccc; margin: 0 10px; position: relative; top: -4px; }
             .toc-page { font-weight: bold; font-family: monospace; font-size: 13pt; }
 
-            .bereich-section { break-before: page; margin-bottom: 0 !important; border: 1px solid #eee !important; min-height: 100vh; }
-            .abteilung-group { break-inside: avoid; }
-            .contact-card { break-inside: avoid; border: 1px solid #eee !important; box-shadow: none !important; }
+            /* Bereiche & Hintergrund */
+            .bereich-section { 
+                break-before: page; 
+                margin: 0 !important; 
+                border: none !important; 
+                border-radius: 0 !important;
+                min-height: 100vh; /* Zieht den Hintergrund so weit wie möglich */
+                background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area)) !important;
+                -webkit-box-decoration-break: clone;
+                box-decoration-break: clone;
+            }
+            
+            .bereich-content { padding: 10px 25px 40px 25px; }
+
+            /* Abteilungs-Padding für Folgeseiten */
+            .abteilung-group { 
+                break-inside: avoid; 
+                page-break-inside: avoid; 
+                padding-top: 30px; /* Sicherer Abstand oben auf neuen Seiten */
+            }
+
+            .contact-card { break-inside: avoid; page-break-inside: avoid; border: 1px solid #eee !important; box-shadow: none !important; }
+
+            /* Email niemals umbrechen */
+            .contact-link { white-space: nowrap !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- Titelseite & Legende für den Ausdruck -->
+<!-- Titelseite & Legende -->
 <div class="print-only">
     <div class="print-cover">
         <div class="cover-header">
+            <img src="img/LHW Logo Trans.svg" alt="Logo" class="cover-logo">
             <div>
-                <h1>Kontakt-<br>verzeichnis</h1>
+                <h1>Kontaktverzeichnis</h1>
                 <p id="print-date" style="font-size: 14pt; color: #666; margin-top: 10px;">Datenstand: --</p>
             </div>
-            <img src="img/LHW Logo Trans.svg" alt="Logo" class="cover-logo">
         </div>
         <div class="toc-container">
             <div class="toc-title">Farbleitsystem & Bereiche</div>
