@@ -430,9 +430,39 @@
 
     /* --- RENDERING --- */
     function handleSearch() {
-        const q = document.getElementById('search').value.toLowerCase();
-        document.querySelectorAll('.bereich-section').forEach(sec => {
-            sec.style.display = sec.textContent.toLowerCase().includes(q) ? "" : "none";
+        const query = document.getElementById('search').value.toLowerCase();
+        
+        document.querySelectorAll('.bereich-section').forEach(bereichSec => {
+            const bereichHeader = bereichSec.querySelector('.bereich-header').textContent.toLowerCase();
+            const bereichMatch = bereichHeader.includes(query);
+            let bereichHasVisibleContent = false;
+
+            bereichSec.querySelectorAll('.abteilung-group').forEach(abtGrp => {
+                const abtHeaderEl = abtGrp.querySelector('.abteilung-header');
+                const abtHeaderText = abtHeaderEl ? abtHeaderEl.textContent.toLowerCase() : "";
+                const abtMatch = abtHeaderText.includes(query);
+                let abtHasVisibleContent = false;
+
+                abtGrp.querySelectorAll('.contact-card').forEach(card => {
+                    // Eine Karte wird angezeigt, wenn:
+                    // 1. Der Suchbegriff im Bereichs-Namen vorkommt
+                    // 2. Der Suchbegriff im Abteilungs-Namen vorkommt
+                    // 3. Der Suchbegriff in der Karte selbst (Name, Tel, Mail, etc.) vorkommt
+                    const cardMatch = card.textContent.toLowerCase().includes(query);
+                    const isVisible = bereichMatch || abtMatch || cardMatch;
+                    
+                    card.style.display = isVisible ? "" : "none";
+                    if (isVisible) abtHasVisibleContent = true;
+                });
+
+                // Abteilung anzeigen, wenn der Header matcht ODER Karten darin sichtbar sind
+                const showAbt = abtMatch || abtHasVisibleContent;
+                abtGrp.style.display = showAbt ? "" : "none";
+                if (showAbt) bereichHasVisibleContent = true;
+            });
+
+            // Sektion anzeigen, wenn Bereichs-Header matcht ODER Inhalte darin sichtbar sind
+            bereichSec.style.display = (bereichMatch || bereichHasVisibleContent) ? "" : "none";
         });
     }
 
