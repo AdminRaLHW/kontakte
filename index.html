@@ -219,17 +219,19 @@
         }
         .acc-overlay.show { display: block; }
 
-        @media print {
+       @media print {
             /* Grundeinstellungen */
             @page {
                 size: A4;
-                margin: 15mm;
+                margin: 10mm;
             }
 
             body {
                 background: white !important;
                 color: black !important;
                 font-size: 10pt;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
             /* UI ausblenden */
@@ -249,134 +251,133 @@
 
             /* DECKBLATT STYLING */
             .print-cover {
-                height: 95vh; /* Fast volle Seite */
+                height: 96vh;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 align-items: center;
                 text-align: center;
-                page-break-after: always; /* Erzwingt neue Seite nach dem Deckblatt */
+                page-break-after: always;
                 padding: 40px 0;
             }
 
-            .cover-header {
-                margin-top: 10vh;
-            }
-
-            .cover-logo {
-                height: 120px;
-                width: auto;
-                margin-bottom: 30px;
-                filter: none !important; /* Logo farbig drucken */
-            }
+            .cover-header { margin-top: 8vh; }
+            .cover-logo { height: 100px; width: auto; margin-bottom: 25px; filter: none !important; }
 
             .print-cover h1 {
-                font-size: 42pt;
+                font-size: 40pt;
                 font-weight: 900;
                 text-transform: uppercase;
                 margin: 0;
-                letter-spacing: 2px;
                 color: #000;
             }
 
-            .no-break {
-                white-space: nowrap; /* Garantiert kein Umbruch */
-            }
+            .no-break { white-space: nowrap; }
 
-            /* INHALTSVERZEICHNIS (TOC) AUF DEM DECKBLATT */
             .toc-container {
                 width: 100%;
-                max-width: 17cm;
-                margin: 40px auto;
+                max-width: 18cm;
+                margin: 30px auto;
                 text-align: left;
             }
 
             .toc-title {
                 font-weight: 900;
-                font-size: 14pt;
+                font-size: 13pt;
                 text-transform: uppercase;
-                border-bottom: 3px solid #333;
-                margin-bottom: 20px;
+                border-bottom: 2pt solid #333;
+                margin-bottom: 15px;
                 padding-bottom: 5px;
             }
 
             .toc-item {
                 display: flex;
                 align-items: center;
-                margin-bottom: 10px;
-                font-size: 11pt;
+                margin-bottom: 8px;
+                font-size: 10pt;
             }
 
             .toc-color-box {
-                width: 14px;
-                height: 14px;
-                margin-right: 12px;
+                width: 12px;
+                height: 12px;
+                margin-right: 10px;
                 border: 0.5pt solid #000;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
             .toc-dots {
                 flex-grow: 1;
-                border-bottom: 1px dotted #888;
+                border-bottom: 1pt dotted #888;
                 margin: 0 10px;
                 position: relative;
                 top: -4px;
             }
 
-            .toc-page {
-                font-weight: bold;
-                min-width: 30px;
-                text-align: right;
-            }
-
             .cover-footer {
                 width: 100%;
-                max-width: 17cm;
-                border-top: 1pt solid #ccc;
-                padding-top: 20px;
+                max-width: 18cm;
+                border-top: 0.5pt solid #ccc;
+                padding-top: 15px;
                 display: flex;
                 justify-content: space-between;
-                font-size: 9pt;
-                color: #555;
+                font-size: 8pt;
+                color: #444;
             }
 
-            /* INHALTS-SEITEN STYLING */
+            /* INHALTS-SEITEN MIT HINTERGRUND */
             .bereich-section {
-                page-break-before: always; /* Jeder Bereich startet auf neuer Seite */
-                margin-bottom: 0;
-                background: transparent !important;
-                border: none !important;
-                border-radius: 0;
+                page-break-before: always;
+                margin-bottom: 20px;
+                border: 1px solid var(--border-ui) !important;
+                border-radius: 12px !important;
+                /* Nutzt die Hintergrundfarbe aus dem Root-Style */
+                background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area)) !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
             .bereich-header {
-                background: transparent !important;
-                color: var(--accent) !important;
-                padding: 0 0 10px 0 !important;
-                border-bottom: 4pt solid var(--accent) !important;
-                margin-bottom: 25px !important;
-                font-size: 22pt !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                /* Nutzt die Akzentfarbe als Vollfläche wie im Web */
+                background-color: var(--accent) !important;
+                color: #ffffff !important;
+                padding: 12px 20px !important;
+                font-size: 18pt !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
-            .bereich-content { padding: 0 !important; }
+            .bereich-content { padding: 20px !important; }
 
             .abteilung-group {
-                margin-bottom: 30px;
+                margin-bottom: 25px;
                 break-inside: avoid;
             }
 
-            .contact-card {
-                break-inside: avoid; /* Karten werden nicht mitten im Text zerschnitten */
-                border: 1pt solid #ddd !important;
-                box-shadow: none !important;
-                background: #fff !important;
-                margin-bottom: 10px;
+            .abteilung-header {
+                font-size: 13pt !important;
+                color: #000 !important;
+                margin-bottom: 10px !important;
             }
-            
-            .contact-link { color: #000 !important; text-decoration: none; }
+
+            .cards-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important; /* 2 Spalten im Druck */
+                gap: 15px !important;
+            }
+
+            .contact-card {
+                break-inside: avoid;
+                border: 0.5pt solid #ccc !important;
+                background: #fff !important;
+                padding: 15px !important;
+                box-shadow: none !important;
+            }
+
+            .contact-card h4 { font-size: 11pt !important; color: #000 !important; }
+            .job-position { font-size: 8pt !important; margin-bottom: 8px !important; }
+            .contact-link { color: #000 !important; text-decoration: none; font-size: 9pt !important; }
             .icon-container { color: var(--accent) !important; }
         }
     </style>
