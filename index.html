@@ -693,13 +693,23 @@
                 groupedData[bName][aName].sort((x,y) => x.Name.localeCompare(y.Name)).forEach(p => {
                     const card = document.createElement('div');
                     card.className = "contact-card";
+                    
                     const row = (icon, val, type) => {
                         if (!val || val === "-") return "";
                         const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
                         const displayVal = type === 'mail' ? val.replace('@', '@\u200B').split('-').join('\u2011') : val;
                         return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${displayVal}</a></div>`;
                     };
-                    card.innerHTML = `<h4>${p.Name}</h4><div class="job-position">${p.Position || ''}</div>${row(ICON_PHONE, p.Telefon, 'tel')}${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}${row(ICON_MAIL, p.Email, 'mail')}`;
+
+                    card.innerHTML = `
+                        <h4>${p.Name}</h4>
+                        <div class="job-position">${p.Position || ''}</div>
+                        ${row(ICON_PHONE, p.Telefon, 'tel')}
+                        ${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                        ${row(ICON_MAIL, p.Email, 'mail')}
+                        ${row(ICON_MAIL, p.Email_alt, 'mail')}  <!-- Dies ist die neue Zeile für Email_alt -->
+                    `;
+                    
                     grid.appendChild(card);
                 });
                 group.appendChild(grid);
