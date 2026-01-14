@@ -132,6 +132,19 @@
             letter-spacing: 0.08em; font-weight: 800;
         }
 
+        .bereich-fax {
+            display: block;
+            font-size: 1rem;
+            background-color: var(--accent);
+            padding: 10px 25px;
+            margin-top: -1px; /* Bündig mit Header */
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+
+        }
+
         .bereich-content { padding: 25px; }
         .abteilung-group { margin-bottom: 35px; }
         .abteilung-location {
@@ -343,6 +356,14 @@
                 margin-bottom: -2dvh !important; /* Verhindert zu großen Abstand nach unten */
             }
            
+            .bereich-fax {
+                margin-top: 2dvh;  
+                color: var(--card-text) !important; 
+                background-color: var(--bg-opacity-area) !important;
+                border-bottom: 1px solid #ccc;
+
+            }
+
             .abteilung-group { padding-top: 4dvh; break-inside: avoid; }
             .abteilung-location {
                 color: #333 !important;
@@ -647,101 +668,123 @@
     });
 
     function render(data) {
-        const root = document.getElementById('directory');
-        const tocRoot = document.getElementById('print-toc');
-        root.innerHTML = ""; tocRoot.innerHTML = "";
+    const root = document.getElementById('directory');
+    const tocRoot = document.getElementById('print-toc');
+    root.innerHTML = ""; tocRoot.innerHTML = "";
 
-        const areaSortMap = {}; 
-        const groupedData = data.reduce((acc, p) => {
-            const b = p.Bereich?.trim() || "Allgemein";
-            const a = p.Abteilung?.trim() || "_NO_DEPT_";
-            const code = parseInt(p.ColorCode) || 99;
-            if (!areaSortMap[b] || code < areaSortMap[b]) areaSortMap[b] = code;
-            if (!acc[b]) acc[b] = {};
-            if (!acc[b][a]) acc[b][a] = [];
-            acc[b][a].push(p);
-            return acc;
-        }, {});
+    const areaSortMap = {}; 
+    const groupedData = data.reduce((acc, p) => {
+        const b = p.Bereich?.trim() || "Allgemein";
+        const a = p.Abteilung?.trim() || "_NO_DEPT_";
+        const code = parseInt(p.ColorCode) || 99;
+        if (!areaSortMap[b] || code < areaSortMap[b]) areaSortMap[b] = code;
+        if (!acc[b]) acc[b] = {};
+        if (!acc[b][a]) acc[b][a] = [];
+        acc[b][a].push(p);
+        return acc;
+    }, {});
 
-        const sortedBereiche = Object.keys(groupedData).sort((a, b) => areaSortMap[a] - areaSortMap[b]);
+    const sortedBereiche = Object.keys(groupedData).sort((a, b) => areaSortMap[a] - areaSortMap[b]);
 
-        sortedBereiche.forEach((bName, index) => {
-            const sectionCode = areaSortMap[bName].toString().padStart(2, '0');
-            const pageNum = index + 2;
-
-            const tocItem = document.createElement('div');
-            tocItem.className = 'toc-item';
-            tocItem.innerHTML = `<div class="toc-color-box" style="background-color: var(--hex-${sectionCode})"></div><div class="toc-name">${bName}</div><div class="toc-dots"></div><div class="toc-page">S. ${pageNum}</div>`;
-            tocRoot.appendChild(tocItem);
-
-            const section = document.createElement('section');
-            section.className = `bereich-section cat-${sectionCode}`;
-            section.innerHTML = `<h2 class="bereich-header">${bName}</h2><div class="bereich-content"></div>`;
-            const content = section.querySelector('.bereich-content');
-
-            Object.keys(groupedData[bName]).sort().forEach(aName => {
-                const group = document.createElement('div');
-                group.className = "abteilung-group";
-                
-                const personArray = groupedData[bName][aName];
-                const standort = personArray[0].Standort?.trim() || "";
-
-                // FAX LOGIK: Häufigkeit zählen
-                const faxList = personArray.map(p => p.Fax?.trim()).filter(f => f && f !== "-");
-                let commonFax = "";
-                if (faxList.length > 0) {
-                    const counts = faxList.reduce((acc, f) => { acc[f] = (acc[f] || 0) + 1; return acc; }, {});
-                    // Findet die Faxnummer, die am häufigsten vorkommt
-                    commonFax = Object.keys(counts).reduce((a, b) => counts[a] >= counts[b] ? a : b);
+    sortedBereiche.forEach((bName, index) => {
+        const sectionCode = areaSortMap[bName].toString().padStart(2, '0');
+        
+        // --- FAX LOGIK ANALYSE FÜR BEREICH ---
+        const faxDistribution = {}; // Fax -> Set von Abteilungsnamen
+        Object.keys(groupedData[bName]).forEach(aName => {
+            groupedData[bName][aName].forEach(p => {
+                const f = p.Fax?.trim();
+                if (f && f !== "-") {
+                    if (!faxDistribution[f]) faxDistribution[f] = new Set();
+                    faxDistribution[f].add(aName);
                 }
-
-                let headerContent = "";
-                if (aName !== "_NO_DEPT_") headerContent += `<h3 class="abteilung-header">${aName}</h3>`;
-                if (standort && standort !== "-") headerContent += `<div class="abteilung-location">${standort}</div>`;
-                
-                // Fax im Header anzeigen (wenn vorhanden)
-                if (commonFax) {
-                    headerContent += `<div class="abteilung-fax">${ICON_FAX} Fax: ${commonFax}</div>`;
-                }
-                
-                group.innerHTML = headerContent;
-
-                const grid = document.createElement('div');
-                grid.className = "cards-grid";
-
-                personArray.sort((x,y) => x.Name.localeCompare(y.Name)).forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = "contact-card";
-                    
-                    const row = (icon, val, type) => {
-                        if (!val || val === "-") return "";
-                        const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
-                        const displayVal = type === 'mail' ? val.replace('@', '@\u200B').split('-').join('\u2011') : val;
-                        return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${displayVal}</a></div>`;
-                    };
-
-                    // FAX IN DER CARD: Nur anzeigen, wenn sie von der Abteilungs-Fax abweicht
-                    const individualFax = p.Fax?.trim();
-                    const faxRow = (individualFax && individualFax !== "-" && individualFax !== commonFax) 
-                        ? row(ICON_FAX, individualFax, 'tel') 
-                        : "";
-
-                    card.innerHTML = `
-                        <h4>${p.Name}</h4>
-                        <div class="job-position">${p.Position || ''}</div>
-                        ${row(ICON_PHONE, p.Telefon, 'tel')}
-                        ${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}
-                        ${row(ICON_MAIL, p.Email, 'mail')}
-                        ${row(ICON_MAIL, p.Email_alt, 'mail')}
-                        ${faxRow}
-                    `;
-                    
-                    grid.appendChild(card);
-                });
-                group.appendChild(grid);
-                content.appendChild(group);
             });
-            root.appendChild(section);
+        });
+
+        // Faxe, die in MEHREREN Abteilungen vorkommen -> Bereichs-Header
+        const globalSectionFaxes = Object.keys(faxDistribution).filter(f => faxDistribution[f].size > 1);
+        
+        // Bereichs-Sektion erstellen
+        const section = document.createElement('section');
+        section.className = `bereich-section cat-${sectionCode}`;
+        
+        let sectionHtml = `<h2 class="bereich-header">${bName}</h2>`;
+        globalSectionFaxes.forEach(f => {
+            sectionHtml += `<div class="bereich-fax">${ICON_FAX} Fax: ${f}</div>`;
+        });
+        sectionHtml += `<div class="bereich-content"></div>`;
+        section.innerHTML = sectionHtml;
+        const content = section.querySelector('.bereich-content');
+
+        // Abteilungen rendern
+        Object.keys(groupedData[bName]).sort().forEach(aName => {
+            const group = document.createElement('div');
+            group.className = "abteilung-group";
+            
+            const personArray = groupedData[bName][aName];
+            
+            // Lokale Fax-Analyse (nur für Faxe, die NICHT im Bereichs-Header stehen)
+            const localFaxCounts = {};
+            personArray.forEach(p => {
+                const f = p.Fax?.trim();
+                if (f && f !== "-" && !globalSectionFaxes.includes(f)) {
+                    localFaxCounts[f] = (localFaxCounts[f] || 0) + 1;
+                }
+            });
+
+            // Faxe, die lokal MEHRFACH vorkommen -> Abteilungs-Header
+            const localDeptFaxes = Object.keys(localFaxCounts).filter(f => localFaxCounts[f] > 1);
+
+            let headerContent = (aName !== "_NO_DEPT_") ? `<h3 class="abteilung-header">${aName}</h3>` : "";
+            const standort = personArray[0].Standort?.trim();
+            if (standort && standort !== "-") headerContent += `<div class="abteilung-location">${standort}</div>`;
+            
+            localDeptFaxes.forEach(f => {
+                headerContent += `<div class="abteilung-fax">${ICON_FAX} Fax: ${f}</div>`;
+            });
+            group.innerHTML = headerContent;
+
+            const grid = document.createElement('div');
+            grid.className = "cards-grid";
+
+            personArray.sort((x,y) => x.Name.localeCompare(y.Name)).forEach(p => {
+                const card = document.createElement('div');
+                card.className = "contact-card";
+                
+                const row = (icon, val, type) => {
+                    if (!val || val === "-") return "";
+                    const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
+                    const displayVal = type === 'mail' ? val.replace('@', '@\u200B').split('-').join('\u2011') : val;
+                    return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${displayVal}</a></div>`;
+                };
+
+                // Fax in der Card nur zeigen, wenn es weder im Bereichs- noch im Abteilungs-Header ist
+                const pFax = p.Fax?.trim();
+                const showFaxInCard = pFax && pFax !== "-" && 
+                                     !globalSectionFaxes.includes(pFax) && 
+                                     !localDeptFaxes.includes(pFax);
+
+                card.innerHTML = `
+                    <h4>${p.Name}</h4>
+                    <div class="job-position">${p.Position || ''}</div>
+                    ${row(ICON_PHONE, p.Telefon, 'tel')}
+                    ${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                    ${row(ICON_MAIL, p.Email, 'mail')}
+                    ${row(ICON_MAIL, p.Email_alt, 'mail')}
+                    ${showFaxInCard ? row(ICON_FAX, pFax, 'tel') : ""}
+                `;
+                grid.appendChild(card);
+            });
+            group.appendChild(grid);
+            content.appendChild(group);
+        });
+        root.appendChild(section);
+        
+        // TOC (Inhaltsverzeichnis) wie gehabt hinzufügen...
+        const tocItem = document.createElement('div');
+        tocItem.className = 'toc-item';
+        tocItem.innerHTML = `<div class="toc-color-box" style="background-color: var(--hex-${sectionCode})"></div><div class="toc-name">${bName}</div><div class="toc-dots"></div><div class="toc-page">S. ${index + 2}</div>`;
+        tocRoot.appendChild(tocItem);
         });
     }
 </script>
