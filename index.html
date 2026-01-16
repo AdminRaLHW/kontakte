@@ -667,124 +667,165 @@
         }
     });
 
-    function render(data) {
-    const root = document.getElementById('directory');
-    const tocRoot = document.getElementById('print-toc');
-    root.innerHTML = ""; tocRoot.innerHTML = "";
+   function render(data) {
+        const root = document.getElementById('directory');
+        const tocRoot = document.getElementById('print-toc');
+        root.innerHTML = ""; 
+        tocRoot.innerHTML = "";
 
-    const areaSortMap = {}; 
-    const groupedData = data.reduce((acc, p) => {
-        const b = p.Bereich?.trim() || "Allgemein";
-        const a = p.Abteilung?.trim() || "_NO_DEPT_";
-        const code = parseInt(p.ColorCode) || 99;
-        if (!areaSortMap[b] || code < areaSortMap[b]) areaSortMap[b] = code;
-        if (!acc[b]) acc[b] = {};
-        if (!acc[b][a]) acc[b][a] = [];
-        acc[b][a].push(p);
-        return acc;
-    }, {});
+        // Hilfsfunktion für Nachnamen-Sortierung
+        const getLastName = (fullName) => {
+            if (!fullName) return "";
+            const parts = fullName.trim().split(/\s+/);
+            return parts.length > 1 ? parts[parts.length - 1] : parts[0];
+        };
 
-    const sortedBereiche = Object.keys(groupedData).sort((a, b) => areaSortMap[a] - areaSortMap[b]);
+        // 1. DATEN GRUPPIEREN & METADATEN SAMMELN
+        const areaMetadata = {}; // Speichert Prio und ColorCode pro Bereich
+        const deptMetadata = {}; // Speichert Prio pro Abteilung
 
-    sortedBereiche.forEach((bName, index) => {
-        const sectionCode = areaSortMap[bName].toString().padStart(2, '0');
-        
-        // --- FAX LOGIK ANALYSE FÜR BEREICH ---
-        const faxDistribution = {}; // Fax -> Set von Abteilungsnamen
-        Object.keys(groupedData[bName]).forEach(aName => {
-            groupedData[bName][aName].forEach(p => {
-                const f = p.Fax?.trim();
-                if (f && f !== "-") {
-                    if (!faxDistribution[f]) faxDistribution[f] = new Set();
-                    faxDistribution[f].add(aName);
-                }
-            });
-        });
-
-        // Faxe, die in MEHREREN Abteilungen vorkommen -> Bereichs-Header
-        const globalSectionFaxes = Object.keys(faxDistribution).filter(f => faxDistribution[f].size > 1);
-        
-        // Bereichs-Sektion erstellen
-        const section = document.createElement('section');
-        section.className = `bereich-section cat-${sectionCode}`;
-        
-        let sectionHtml = `<h2 class="bereich-header">${bName}</h2>`;
-        globalSectionFaxes.forEach(f => {
-            sectionHtml += `<div class="bereich-fax">${ICON_FAX} Fax: ${f}</div>`;
-        });
-        sectionHtml += `<div class="bereich-content"></div>`;
-        section.innerHTML = sectionHtml;
-        const content = section.querySelector('.bereich-content');
-
-        // Abteilungen rendern
-        Object.keys(groupedData[bName]).sort().forEach(aName => {
-            const group = document.createElement('div');
-            group.className = "abteilung-group";
+        const groupedData = data.reduce((acc, p) => {
+            const b = p.Bereich?.trim() || "Allgemein";
+            const a = p.Abteilung?.trim() || "_NO_DEPT_";
             
-            const personArray = groupedData[bName][aName];
-            
-            // Lokale Fax-Analyse (nur für Faxe, die NICHT im Bereichs-Header stehen)
-            const localFaxCounts = {};
-            personArray.forEach(p => {
-                const f = p.Fax?.trim();
-                if (f && f !== "-" && !globalSectionFaxes.includes(f)) {
-                    localFaxCounts[f] = (localFaxCounts[f] || 0) + 1;
-                }
-            });
-
-            // Faxe, die lokal MEHRFACH vorkommen -> Abteilungs-Header
-            const localDeptFaxes = Object.keys(localFaxCounts).filter(f => localFaxCounts[f] > 1);
-
-            let headerContent = (aName !== "_NO_DEPT_") ? `<h3 class="abteilung-header">${aName}</h3>` : "";
-            const standort = personArray[0].Standort?.trim();
-            if (standort && standort !== "-") headerContent += `<div class="abteilung-location">${standort}</div>`;
-            
-            localDeptFaxes.forEach(f => {
-                headerContent += `<div class="abteilung-fax">${ICON_FAX} Fax: ${f}</div>`;
-            });
-            group.innerHTML = headerContent;
-
-            const grid = document.createElement('div');
-            grid.className = "cards-grid";
-
-            personArray.sort((x,y) => x.Name.localeCompare(y.Name)).forEach(p => {
-                const card = document.createElement('div');
-                card.className = "contact-card";
-                
-                const row = (icon, val, type) => {
-                    if (!val || val === "-") return "";
-                    const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
-                    const displayVal = type === 'mail' ? val.replace('@', '@\u200B').split('-').join('\u2011') : val;
-                    return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${displayVal}</a></div>`;
+            // Bereichs-Metadaten (kleinste Prio gewinnt)
+            if (!areaMetadata[b]) {
+                areaMetadata[b] = { 
+                    prio: parseInt(p.Prio_B) || 999, 
+                    color: (p.ColorCode || "01").toString().padStart(2, '0') 
                 };
+            } else {
+                areaMetadata[b].prio = Math.min(areaMetadata[b].prio, parseInt(p.Prio_B) || 999);
+            }
 
-                // Fax in der Card nur zeigen, wenn es weder im Bereichs- noch im Abteilungs-Header ist
-                const pFax = p.Fax?.trim();
-                const showFaxInCard = pFax && pFax !== "-" && 
-                                     !globalSectionFaxes.includes(pFax) && 
-                                     !localDeptFaxes.includes(pFax);
+            // Abteilungs-Metadaten
+            if (!deptMetadata[b]) deptMetadata[b] = {};
+            if (!deptMetadata[b][a]) {
+                deptMetadata[b][a] = parseInt(p.Prio_A) || 999;
+            } else {
+                deptMetadata[b][a] = Math.min(deptMetadata[b][a], parseInt(p.Prio_A) || 999);
+            }
 
-                card.innerHTML = `
-                    <h4>${p.Name}</h4>
-                    <div class="job-position">${p.Position || ''}</div>
-                    ${row(ICON_PHONE, p.Telefon, 'tel')}
-                    ${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}
-                    ${row(ICON_MAIL, p.Email, 'mail')}
-                    ${row(ICON_MAIL, p.Email_alt, 'mail')}
-                    ${showFaxInCard ? row(ICON_FAX, pFax, 'tel') : ""}
-                `;
-                grid.appendChild(card);
-            });
-            group.appendChild(grid);
-            content.appendChild(group);
+            if (!acc[b]) acc[b] = {};
+            if (!acc[b][a]) acc[b][a] = [];
+            acc[b][a].push(p);
+            return acc;
+        }, {});
+
+        // 2. BEREICHE SORTIEREN (Prio_B -> Name)
+        const sortedBereiche = Object.keys(groupedData).sort((a, b) => {
+            return areaMetadata[a].prio - areaMetadata[b].prio || a.localeCompare(b);
         });
-        root.appendChild(section);
-        
-        // TOC (Inhaltsverzeichnis) wie gehabt hinzufügen...
-        const tocItem = document.createElement('div');
-        tocItem.className = 'toc-item';
-        tocItem.innerHTML = `<div class="toc-color-box" style="background-color: var(--hex-${sectionCode})"></div><div class="toc-name">${bName}</div><div class="toc-dots"></div><div class="toc-page">S. ${index + 2}</div>`;
-        tocRoot.appendChild(tocItem);
+
+        // 3. ITERATION ÜBER BEREICHE
+        sortedBereiche.forEach((bName, index) => {
+            const sectionCode = areaMetadata[bName].color;
+            
+            // Fax-Analyse für Bereichsebene
+            const faxDist = {}; 
+            Object.keys(groupedData[bName]).forEach(aName => {
+                groupedData[bName][aName].forEach(p => {
+                    const f = p.Fax?.trim();
+                    if (f && f !== "-") {
+                        if (!faxDist[f]) faxDist[f] = new Set();
+                        faxDist[f].add(aName);
+                    }
+                });
+            });
+            const globalFaxes = Object.keys(faxDist).filter(f => faxDist[f].size > 1);
+            
+            // Sektion erstellen
+            const section = document.createElement('section');
+            section.className = `bereich-section cat-${sectionCode}`;
+            
+            let sectionHtml = `<h2 class="bereich-header">${bName}</h2>`;
+            globalFaxes.forEach(f => {
+                sectionHtml += `<div class="bereich-fax">${ICON_FAX} Fax: ${f}</div>`;
+            });
+            sectionHtml += `<div class="bereich-content"></div>`;
+            section.innerHTML = sectionHtml;
+            const content = section.querySelector('.bereich-content');
+
+            // 4. ABTEILUNGEN SORTIEREN (Prio_A -> Name)
+            const sortedAbts = Object.keys(groupedData[bName]).sort((a, b) => {
+                return deptMetadata[bName][a] - deptMetadata[bName][b] || a.localeCompare(b);
+            });
+
+            sortedAbts.forEach(aName => {
+                const group = document.createElement('div');
+                group.className = "abteilung-group";
+                const personArray = groupedData[bName][aName];
+                
+                // Lokale Fax-Analyse für Abteilungsebene
+                const localFaxCount = {};
+                personArray.forEach(p => {
+                    const f = p.Fax?.trim();
+                    if (f && f !== "-" && !globalFaxes.includes(f)) {
+                        localFaxCount[f] = (localFaxCount[f] || 0) + 1;
+                    }
+                });
+                const localDeptFaxes = Object.keys(localFaxCount).filter(f => localFaxCount[f] > 1);
+
+                // Abteilung Header & Standort
+                let headerHtml = (aName !== "_NO_DEPT_") ? `<h3 class="abteilung-header">${aName}</h3>` : "";
+                const standort = personArray[0].Standort?.trim();
+                if (standort && standort !== "-") headerHtml += `<div class="abteilung-location">${standort}</div>`;
+                localDeptFaxes.forEach(f => {
+                    headerHtml += `<div class="abteilung-fax">${ICON_FAX} Fax: ${f}</div>`;
+                });
+                group.innerHTML = headerHtml;
+
+                const grid = document.createElement('div');
+                grid.className = "cards-grid";
+
+                // 5. PERSONEN SORTIEREN (Prio_P -> Nachname)
+                personArray.sort((x, y) => {
+                    const pX = parseInt(x.Prio_P) || 999;
+                    const pY = parseInt(y.Prio_P) || 999;
+                    if (pX !== pY) return pX - pY;
+                    return getLastName(x.Name).localeCompare(getLastName(y.Name), 'de');
+                }).forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = "contact-card";
+                    
+                    const row = (icon, val, type) => {
+                        if (!val || val === "-") return "";
+                        const link = type === 'tel' ? `tel:${val.replace(/\s/g, '')}` : `mailto:${val}`;
+                        const displayVal = type === 'mail' ? val.replace('@', '@\u200B').split('-').join('\u2011') : val;
+                        return `<div class="contact-row"><span class="icon-container">${icon}</span><a href="${link}" class="contact-link">${displayVal}</a></div>`;
+                    };
+
+                    const pFax = p.Fax?.trim();
+                    const showFaxInCard = pFax && pFax !== "-" && !globalFaxes.includes(pFax) && !localDeptFaxes.includes(pFax);
+
+                    card.innerHTML = `
+                        <h4>${p.Name}</h4>
+                        <div class="job-position">${p.Position || ''}</div>
+                        ${row(ICON_PHONE, p.Telefon, 'tel')}
+                        ${row(ICON_MOBILE, p.Mobiltelefon, 'tel')}
+                        ${row(ICON_MAIL, p.Email, 'mail')}
+                        ${row(ICON_MAIL, p.Email_alt, 'mail')}
+                        ${showFaxInCard ? row(ICON_FAX, pFax, 'tel') : ""}
+                    `;
+                    grid.appendChild(card);
+                });
+                
+                group.appendChild(grid);
+                content.appendChild(group);
+            });
+
+            root.appendChild(section);
+            
+            // TOC (Inhaltsverzeichnis)
+            const tocItem = document.createElement('div');
+            tocItem.className = 'toc-item';
+            tocItem.innerHTML = `
+                <div class="toc-color-box" style="background-color: var(--hex-${sectionCode})"></div>
+                <div class="toc-name">${bName}</div>
+                <div class="toc-dots"></div>
+                <div class="toc-page">S. ${index + 2}</div>
+            `;
+            tocRoot.appendChild(tocItem);
         });
     }
 </script>
