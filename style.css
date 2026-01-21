@@ -156,10 +156,13 @@
       background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area));
       border: 1px solid var(--border-ui); overflow: hidden;
       -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      container-type: inline-size;
+      container-name: section;
   }
   
   .bereich-header { 
-      font-size: 1.4rem; text-transform: uppercase; margin: 0; padding: 18px 25px; 
+      font-size: var(--font-size-h2); 
+      text-transform: uppercase; margin: 0; padding: 18px 25px; 
       background-color: var(--accent); color: #ffffff;
       letter-spacing: 0.08em; font-weight: 800;
   }
@@ -197,20 +200,45 @@
   
   .abteilung-header { font-size: 1.15rem; color: var(--text-main); margin: 0 0 15px 0; font-weight: 700; }
 
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); gap: 20px; }
+  .cards-grid { 
+    display: grid; 
+    /* FIX: Erlaubt der Card auf 100% zu schrumpfen, falls 300px zu breit sind */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-min-width)), 1fr));
+    gap: clamp(10px, 3vw, 20px);
+}
 
   .contact-card {
       background-color: var(--card-bg); border-left: 6px solid var(--accent);
-      padding: 22px; border-radius: 12px; display: flex; flex-direction: column;
+      padding: 15px; /* Kleineres Padding als Basis */
+      border-radius: 12px; display: flex; flex-direction: column;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
+
+  @container section (min-width: 500px) {
+    .contact-card {
+        padding: 22px;
+    }
+}
   
-  .contact-card h4 { margin: 0 0 5px 0; font-size: 1.25rem; color: #000; }
+  .contact-card h4 { 
+    margin: 0 0 5px 0; 
+    font-size: var(--font-size-card-title);
+    word-break: break-word; /* Verhindert das Sprengen der Card durch lange Namen */
+    color: #000; }
+
   .job-position { color: #555; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px; }
   
   .contact-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
   .icon-container { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent); margin-top: 2px; }
-  .contact-link { text-decoration: none; color: #000; font-size: 0.95rem; }
+  .contact-link { 
+    text-decoration: none; 
+    color: #000; 
+    /* Erklärt: Startet bei 0.6rem, reagiert stärker auf Breite (2.5cqi), 
+   deckelt früher bei 0.85rem */
+    font-size: clamp(0.6rem, 0.2rem + 2.5cqi, 0.85rem);
+
+
+    }
 
   /* --- AKZENT-MAPPING --- */
   .cat-01 { --accent: var(--hex-01); } .cat-02 { --accent: var(--hex-02); }
