@@ -1,4 +1,5 @@
- :root {
+
+        :root {
             /* UI MONOCHROM (Light) */
             --bg-body: #f2f2f2;
             --bg-panel: #ffffff;
@@ -18,7 +19,7 @@
             --hex-04: #ffa726; --hex-05: #4fc3f7; --hex-06: #1976d2;
             --hex-07: #1a237e; --hex-08: #00897b; --hex-09: #2e7d32;
             --hex-10: #8e24aa; --hex-11: #c2185b; --hex-12: #fbc02d;
-            --hex-13: #d84315;
+            --hex-13: #d84315; --hex-14: #FF8C00; --hex-15: #800020;
             --accent: #444444; 
 
             /* Accessibility Defaults */
@@ -80,11 +81,42 @@
         [data-theme="dark"] .logo { filter: grayscale(1) invert(1); }
         .logo-link:hover .logo { filter: grayscale(0) invert(0); }
 
-        .search-wrapper { flex-grow: 1; min-width: 150px; }
+        .search-wrapper { flex-grow: 1; min-width: 150px; position: relative; }
+
+        
+        /* Styling für den Reset-Button in der Suche */
+
+        .search-reset {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px;
+            display: none; /* Standardmäßig ausblenden */
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .search-reset:hover { color: var(--text-main); }
+
+        /* Zeige das X nur, wenn Text im Input steht */
+        #search:not(:placeholder-shown) + .search-reset {
+            display: flex;
+        }
+
+        /* Platz für das X lassen */
+        #search { padding-right: 40px; }
+
         input {
             width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-ui);
             background: var(--bg-body); color: var(--text-main); font-size: 1rem; outline: none;
         }
+
 
         .action-controls { display: flex; gap: 10px; flex: 1 0 auto; }
         .theme-btn, .print-btn {
@@ -96,9 +128,16 @@
 
         /* --- WEB FOOTER --- */
         .web-footer {
-            max-width: 100%; margin-top: 80px; padding: 25px 40px; border-top: 1px solid var(--border-ui);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.85rem; color: var(--text-muted); background: var(--bg-panel);
+            max-width: 100%; 
+            margin-top: 80px; 
+            padding: 25px 40px; 
+            border-top: 1px solid var(--border-ui);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            background: var(--bg-panel);
         }
 
         /* --- BEREICHS-STYLING --- */
@@ -115,8 +154,37 @@
             letter-spacing: 0.08em; font-weight: 800;
         }
 
+        .bereich-fax {
+            display: block;
+            font-size: 1rem;
+            background-color: var(--accent);
+            padding: 10px 25px;
+            margin-top: -1px; /* Bündig mit Header */
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+
+        }
+
         .bereich-content { padding: 25px; }
         .abteilung-group { margin-bottom: 35px; }
+        .abteilung-location {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: -10px 0 15px 0; /* Zieht es näher an den Header ran */
+            font-style: italic;
+            font-weight: 500;
+        }
+        .abteilung-fax {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: -10px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
         .abteilung-header { font-size: 1.15rem; color: var(--text-main); margin: 0 0 15px 0; font-weight: 700; }
 
         .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr)); gap: 20px; }
@@ -141,7 +209,8 @@
         .cat-07 { --accent: var(--hex-07); } .cat-08 { --accent: var(--hex-08); }
         .cat-09 { --accent: var(--hex-09); } .cat-10 { --accent: var(--hex-10); }
         .cat-11 { --accent: var(--hex-11); } .cat-12 { --accent: var(--hex-12); }
-        .cat-13 { --accent: var(--hex-13); }
+        .cat-13 { --accent: var(--hex-13); } .cat-14 { --accent: var(--hex-14); }
+        .cat-15 { --accent: var(--hex-15); } 
 
         .btn-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 
@@ -203,6 +272,142 @@
         .acc-overlay.show { display: block; }
 
         @media print {
-            .acc-toggle-btn, .acc-sidebar, .acc-overlay { display: none !important; }
-            #app-wrapper { padding: 0; filter: none !important; }
-        }
+            /* Grundeinstellungen */
+            @page {
+                size: A4;
+                margin: 0; /* Wir steuern die Abstände über die Sektionen */
+            }
+
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 10pt;
+            }
+
+            .no-print, .acc-toggle-btn, .acc-sidebar, .acc-overlay, .update-hint {
+                display: none !important;
+            }
+
+            #app-wrapper {
+                padding: 0 !important;
+                filter: none !important;
+            }
+
+            .print-only {
+                display: block !important;
+            }
+
+            /* DECKBLATT STYLING */
+            .print-cover {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                text-align: center;
+                page-break-after: always;
+                padding: 2cm; /* Standard-Abstand für Druck */
+                box-sizing: border-box;
+            }
+
+            .cover-header { margin-top: 5vh; }
+            .cover-logo { height: 120px; width: auto; margin-bottom: 30px; filter: none !important; }
+            .print-cover h1 { font-size: 42pt; font-weight: 900; text-transform: uppercase; margin: 0; color: #000; }
+            .no-break { white-space: nowrap; }
+
+            .toc-container { width: 100%; max-width: 17cm; margin: 40px auto; text-align: left; }
+            .toc-title { font-weight: 900; font-size: 14pt; text-transform: uppercase; border-bottom: 3px solid #333; margin-bottom: 20px; padding-bottom: 5px; }
+            .toc-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11pt; }
+            .toc-color-box { width: 14px; height: 14px; margin-right: 12px; border: 0.5pt solid #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .toc-dots { flex-grow: 1; border-bottom: 1px dotted #888; margin: 0 10px; position: relative; top: -4px; }
+            .toc-page { font-weight: bold; min-width: 30px; text-align: right; }
+
+            /* KORRIGIERTER FOOTER */
+            .cover-footer {
+                width: 100%;
+                max-width: 17cm;
+                border-top: 1pt solid #ccc;
+                padding-top: 20px;
+                display: flex !important; /* Flexbox erzwingen */
+                justify-content: space-between !important;
+                align-items: flex-start;
+                font-size: 9pt;
+                color: #555;
+            }
+
+            .cover-footer span:first-child {
+                text-align: left;
+                flex: 1;
+            }
+
+            #print-footer-info {
+                text-align: right;
+                line-height: 1.3; /* Optional: Zeilenabstand etwas verringern */
+            }
+
+            /* INHALTS-SEITEN STYLING */
+            /* 1. Die gesamte Sektion bekommt den Hintergrund */
+            .bereich-section {
+                page-break-before: always;
+                margin: 0 !important;
+                padding: 2cm !important;
+                min-height: 100vh; /* Sorgt dafür, dass die Farbe die ganze Seite füllt */
+                border-radius: 0px;
+                /* Hintergrundfarbe erzwingen (die helle Variante) */
+                background-color: hsl(from var(--accent) h s l / var(--bg-opacity-area)) !important;
+                
+                /* Wichtig: Browser anweisen, Hintergründe zu drucken */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+
+            /* 2. Der Header bekommt den vollfarbigen Balken wie im Web */
+            .bereich-header {
+                background-color: var(--accent) !important;
+                color: white !important;
+                
+                /* Den Header bis an die Ränder der Sektion ziehen */
+                margin: -2cm -2cm 30px -2cm !important; 
+                padding: 15px 2cm !important;
+                font-size: 24pt !important;
+                text-transform: uppercase;
+                font-weight: 900;
+                
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                margin-bottom: -2dvh !important; /* Verhindert zu großen Abstand nach unten */
+            }
+           
+            .bereich-fax {
+                margin-top: 2dvh;  
+                color: var(--card-text) !important; 
+                background-color: var(--bg-opacity-area) !important;
+                border-bottom: 1px solid #ccc;
+
+            }
+
+            .abteilung-group { padding-top: 4dvh; break-inside: avoid; }
+            .abteilung-location {
+                color: #333 !important;
+                margin-bottom: 10px !important;
+            }
+            /* 3. Karten-Styling für bessere Lesbarkeit auf farbigem Grund */
+            .contact-card {
+                break-inside: avoid;
+                border: none !important;
+                background: white !important; /* Karten weiß lassen für Kontrast */
+                box-shadow: 0 2mm 5mm rgba(0,0,0,0.1) !important;
+                margin-bottom: 15px;
+                padding: 15px !important;
+            }
+
+            /* 4. Sicherstellen, dass die Grid-Struktur im Druck passt */
+            .cards-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important; /* 2 Spalten nutzen Platz besser */
+                gap: 15px !important;
+            }
+            .contact-link { color: #000 !important; text-decoration: none; }
+            .icon-container { color: var(--accent) !important; }
+        } /* Hier schließt die Media Query korrekt */
