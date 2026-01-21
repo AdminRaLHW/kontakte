@@ -1,5 +1,4 @@
-﻿sep=,,,,,,,,,,,,,
-Name,ColorCode,Prio_B,Bereich,Prio_A,Abteilung,Prio_P,Position,Standort,Telefon,Mobiltelefon,Email,Email_alt,Fax
+﻿Name,ColorCode,Prio_B,Bereich,Prio_A,Abteilung,Prio_P,Position,Standort,Telefon,Mobiltelefon,Email,Email_alt,Fax
 Simone Herzog,1,1,Verwaltung,1,Telefonzentrale,1,,Gievitzer Str. 88c,03991 61157-0 | -100,,herzog@lebenshilfswerk-waren.de,,+49 3991 611 57-101
 Matthias Worner,1,1,Verwaltung,2,Hauptkasse,2,Poststelle,Gievitzer Str. 88c,03991 61157-108,,worner@lebenshilfswerk-waren.de,,+49 3991 611 57-101
 Anke Koth,1,1,Verwaltung,4,Geschäftsleitung,1,Geschäftsführung,Gievitzer Str. 88c,03991 61157-102,,koth@lebenshilfswerk-waren.de,,
