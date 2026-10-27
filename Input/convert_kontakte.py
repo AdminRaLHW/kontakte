@@ -4,13 +4,14 @@ Skript zur Sicherung und Bereinigung/Konvertierung der Kontakte-CSV-Datei.
 Ablauf:
 1. SSoT-Ermittlung:
    - Jede CSV-Datei im Ordner dieses Skripts (Input/) gilt als SSoT.
-   - Der Dateiname ist egal.
-2. UTF-8 mit BOM Konvertierung:
-   - Die Input-Datei wird zuerst in UTF-8 mit BOM konvertiert (ohne Ersatz-Mapping).
+   - Der Dateiname ist beliebig.
+2. Reopen & Save with Encoding:
+   - Die Quelldatei wird zuerst mit dem Encoding ISO-8859-1 (Latin-1) geoeffnet.
+   - Anschliessend wird sie mit dem Encoding UTF-8 with BOM (utf-8-sig) gespeichert.
 3. Sicherung:
    - Vor dem Ueberschreiben von data/kontakte.csv wird ein Backup
      unter Backup/kontakte_YYYY-MM-DD_xx.csv erstellt (xx = 01, 02, ... laufende Nummer am Tag).
-4. Eigentliche Skriptarbeit:
+4. Eigentliche Skriptarbeit (Verarbeitung):
    - Semikolon-Trennzeichen (;) wird zu Standard-Komma (,).
    - Leere Excel-Geisterzeilen und Rand-Leerzeichen werden bereinigt.
    - data/kontakte.csv wird atomar ausschliesslich mit den SSoT-Datensaetzen im Format UTF-8 mit BOM gespeichert.
@@ -61,39 +62,29 @@ def find_ssot_input_file(script_dir: Path) -> Path:
 
 def convert_input_to_utf8_bom(input_path: Path) -> str:
     """
-    Schritt 1: Konvertiert die Input-Datei zu UTF-8 mit BOM (utf-8-sig).
-    Erkennt Quellcodierung (UTF-8, Windows-1252/ANSI, ISO-8859-1)
-    und stellt sicher, dass die Datei als UTF-8 mit BOM gespeichert ist.
-    Gibt den Textinhalt zur Weiterverarbeitung zurueck.
+    1. Reopen with encoding ISO-8859-1:
+       Liest die Quelldatei mit dem Zeichensatz ISO-8859-1 ein.
+       (Falls die Datei bereits das UTF-8 BOM Byte-Muster enthaelt, wird direkt UTF-8-sig gelesen).
+    2. Save with encoding UTF-8 with BOM:
+       Speichert die Quelldatei als UTF-8 mit BOM (utf-8-sig) ab.
+    3. Gibt den decodierten Text zur nachfolgenden Verarbeitung zurueck.
     """
     raw_bytes = input_path.read_bytes()
     if not raw_bytes:
         raise ValueError(f"Input-Datei ist leer: {input_path}")
 
-    # Pruefen, ob die Datei bereits UTF-8 mit BOM ist
+    # Falls die Datei bereits UTF-8 mit BOM ist
     if raw_bytes.startswith(b"\xef\xbb\xbf"):
-        print(f"[ENCODING] {input_path.name} ist bereits UTF-8 mit BOM.")
+        print(f"[ENCODING] {input_path.name} ist bereits als UTF-8 mit BOM gespeichert.")
         return raw_bytes.decode("utf-8-sig")
 
-    # Quellcodierung erkennen
-    text = None
-    source_encoding = None
+    # 1. Reopen with encoding ISO-8859-1
+    text = raw_bytes.decode("iso-8859-1")
+    print(f"[REOPEN] Quelldatei '{input_path.name}' mit Encoding ISO-8859-1 geoeffnet.")
 
-    for enc in ["utf-8", "cp1252", "iso-8859-1"]:
-        try:
-            text = raw_bytes.decode(enc)
-            source_encoding = enc
-            break
-        except UnicodeDecodeError:
-            continue
-
-    if text is None:
-        text = raw_bytes.decode("utf-8", errors="replace")
-        source_encoding = "utf-8 (mit Fallback)"
-
-    # Input-Datei als UTF-8 mit BOM speichern
+    # 2. Save with encoding UTF-8 with BOM
     input_path.write_text(text, encoding="utf-8-sig", newline="")
-    print(f"[KONVERTIERUNG] Input-Datei {input_path.name} von '{source_encoding}' nach UTF-8 mit BOM konvertiert.")
+    print(f"[SAVE]   Quelldatei '{input_path.name}' mit Encoding UTF-8 with BOM gespeichert.")
 
     return text
 
@@ -216,7 +207,7 @@ def main():
     print(" LHW-KONTAKTE DATENIMPORT (SSoT-SYNCHRONISATION)")
     print("=" * 70)
 
-    # 1. SSoT-Input-Datei ermitteln (Dateiname ist egal!)
+    # 1. SSoT-Input-Datei ermitteln (Dateiname ist beliebig!)
     if len(sys.argv) > 1:
         input_file = Path(sys.argv[1])
         if not input_file.is_absolute():
@@ -229,7 +220,7 @@ def main():
     print(f"Backup-Ordner: {backup_dir}")
     print("-" * 70)
 
-    # 2. Zuerst Input-Datei als UTF-8 mit BOM konvertieren
+    # 2. Quelldatei mit ISO-8859-1 öffnen und mit UTF-8 with BOM speichern
     text = convert_input_to_utf8_bom(input_file)
 
     # 3. Bestehende data/kontakte.csv sichern
