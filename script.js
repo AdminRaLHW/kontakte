@@ -128,13 +128,15 @@
             bereichSec.querySelectorAll('.abteilung-group').forEach(abtGrp => {
                 const abtHeaderEl = abtGrp.querySelector('.abteilung-header');
                 const abtHeaderText = abtHeaderEl ? abtHeaderEl.textContent.toLowerCase() : "";
-                const abtMatch = abtHeaderText.includes(query);
+                const abtLocEl = abtGrp.querySelector('.abteilung-location');
+                const abtLocText = abtLocEl ? abtLocEl.textContent.toLowerCase() : "";
+                const abtMatch = abtHeaderText.includes(query) || abtLocText.includes(query);
                 let abtHasVisibleContent = false;
 
                 abtGrp.querySelectorAll('.contact-card').forEach(card => {
                     // Eine Karte wird angezeigt, wenn:
                     // 1. Der Suchbegriff im Bereichs-Namen vorkommt
-                    // 2. Der Suchbegriff im Abteilungs-Namen vorkommt
+                    // 2. Der Suchbegriff im Abteilungs-Namen oder Standort vorkommt
                     // 3. Der Suchbegriff in der Karte selbst (Name, Tel, Mail, etc.) vorkommt
                     const cardMatch = card.textContent.toLowerCase().includes(query);
                     const isVisible = bereichMatch || abtMatch || cardMatch;
@@ -143,7 +145,7 @@
                     if (isVisible) abtHasVisibleContent = true;
                 });
 
-                // Abteilung anzeigen, wenn der Header matcht ODER Karten darin sichtbar sind
+                // Abteilung anzeigen, wenn der Header/Standort matcht ODER Karten darin sichtbar sind
                 const showAbt = abtMatch || abtHasVisibleContent;
                 abtGrp.style.display = showAbt ? "" : "none";
                 if (showAbt) bereichHasVisibleContent = true;
@@ -177,11 +179,14 @@
 
         // 1. DATEN GRUPPIEREN & METADATEN SAMMELN
         const areaMetadata = {}; // Speichert Prio und ColorCode pro Bereich
-        const deptMetadata = {}; // Speichert Prio pro Abteilung
+        const deptMetadata = {}; // Speichert Prio, Name und Standort pro Abteilungsgruppe
 
         const groupedData = data.reduce((acc, p) => {
             const b = p.Bereich?.trim() || "Allgemein";
             const a = p.Abteilung?.trim() || "_NO_DEPT_";
+            const s = p.Standort?.trim() || "";
+            // Gleiche Abteilung mit unterschiedlichem Standort wird als eigene/neue Abteilung behandelt
+            const deptKey = `${a}§§§${s}`;
             
             // Bereichs-Metadaten (kleinste Prio gewinnt)
             if (!areaMetadata[b]) {
@@ -193,17 +198,22 @@
                 areaMetadata[b].prio = Math.min(areaMetadata[b].prio, parseInt(p.Prio_B) || 999);
             }
 
-            // Abteilungs-Metadaten
+            // Abteilungs-Metadaten (Reihenfolge weiterhin durch Prio_A vorgegeben)
+            const prioA = parseInt(p.Prio_A) || 999;
             if (!deptMetadata[b]) deptMetadata[b] = {};
-            if (!deptMetadata[b][a]) {
-                deptMetadata[b][a] = parseInt(p.Prio_A) || 999;
+            if (!deptMetadata[b][deptKey]) {
+                deptMetadata[b][deptKey] = {
+                    name: a,
+                    standort: s,
+                    prio: prioA
+                };
             } else {
-                deptMetadata[b][a] = Math.min(deptMetadata[b][a], parseInt(p.Prio_A) || 999);
+                deptMetadata[b][deptKey].prio = Math.min(deptMetadata[b][deptKey].prio, prioA);
             }
 
             if (!acc[b]) acc[b] = {};
-            if (!acc[b][a]) acc[b][a] = [];
-            acc[b][a].push(p);
+            if (!acc[b][deptKey]) acc[b][deptKey] = [];
+            acc[b][deptKey].push(p);
             return acc;
         }, {});
 
@@ -218,12 +228,12 @@
             
             // Fax-Analyse für Bereichsebene
             const faxDist = {}; 
-            Object.keys(groupedData[bName]).forEach(aName => {
-                groupedData[bName][aName].forEach(p => {
+            Object.keys(groupedData[bName]).forEach(deptKey => {
+                groupedData[bName][deptKey].forEach(p => {
                     const f = p.Fax?.trim();
                     if (f && f !== "-") {
                         if (!faxDist[f]) faxDist[f] = new Set();
-                        faxDist[f].add(aName);
+                        faxDist[f].add(deptKey);
                     }
                 });
             });
@@ -241,15 +251,25 @@
             section.innerHTML = sectionHtml;
             const content = section.querySelector('.bereich-content');
 
-            // 4. ABTEILUNGEN SORTIEREN (Prio_A -> Name)
-            const sortedAbts = Object.keys(groupedData[bName]).sort((a, b) => {
-                return deptMetadata[bName][a] - deptMetadata[bName][b] || a.localeCompare(b);
+            // 4. ABTEILUNGEN SORTIEREN (Prio_A -> Name -> Standort)
+            const sortedAbts = Object.keys(groupedData[bName]).sort((k1, k2) => {
+                const m1 = deptMetadata[bName][k1];
+                const m2 = deptMetadata[bName][k2];
+                if (m1.prio !== m2.prio) {
+                    return m1.prio - m2.prio;
+                }
+                const nameComp = m1.name.localeCompare(m2.name, 'de');
+                if (nameComp !== 0) return nameComp;
+                return m1.standort.localeCompare(m2.standort, 'de');
             });
 
-            sortedAbts.forEach(aName => {
+            sortedAbts.forEach(deptKey => {
                 const group = document.createElement('div');
                 group.className = "abteilung-group";
-                const personArray = groupedData[bName][aName];
+                const personArray = groupedData[bName][deptKey];
+                const deptMeta = deptMetadata[bName][deptKey];
+                const aName = deptMeta.name;
+                const standort = deptMeta.standort;
                 
                 // Lokale Fax-Analyse für Abteilungsebene
                 const localFaxCount = {};
@@ -263,7 +283,6 @@
 
                 // Abteilung Header & Standort
                 let headerHtml = (aName !== "_NO_DEPT_") ? `<h3 class="abteilung-header">${aName}</h3>` : "";
-                const standort = personArray[0].Standort?.trim();
                 if (standort && standort !== "-") headerHtml += `<div class="abteilung-location">${standort}</div>`;
                 localDeptFaxes.forEach(f => {
                     headerHtml += `<div class="abteilung-fax">${ICON_FAX} Fax: ${f}</div>`;
@@ -325,8 +344,8 @@
     }
 
     function clearSearch() {
-    const searchInput = document.getElementById('search');
-    searchInput.value = '';       // Text löschen
-    handleSearch();               // Suche triggern (blendet alles wieder ein)
-    searchInput.focus();          // Fokus zurück ins Feld
+        const searchInput = document.getElementById('search');
+        searchInput.value = '';       // Text löschen
+        handleSearch();               // Suche triggern (blendet alles wieder ein)
+        searchInput.focus();          // Fokus zurück ins Feld
     }
