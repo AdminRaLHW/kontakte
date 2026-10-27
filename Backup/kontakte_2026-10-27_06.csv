@@ -1,0 +1,106 @@
+﻿Name,ColorCode,Prio_B,Bereich,Prio_A,Abteilung,Prio_P,Position,Standort,Telefon,Mobiltelefon,Email,Email_alt,Fax
+Simone Herzog,1,1,Verwaltung & Geschäftsleitung,1,Telefonzentrale,1,,Gievitzer Str. 88c,03991 61157-0 | -100,,herzog@lebenshilfswerk-waren.de,,+49 3991 611 57-101
+Matthias Worner,1,1,Verwaltung & Geschäftsleitung,2,Hauptkasse,2,Poststelle,Gievitzer Str. 88c,03991 61157-108,,worner@lebenshilfswerk-waren.de,,+49 3991 611 57-101
+Anke Koth,1,1,Verwaltung & Geschäftsleitung,5,Geschäftsleitung,1,Geschäftsführung,Gievitzer Str. 88c,03991 61157-102,0173 9859709,koth@lebenshilfswerk-waren.de,,
+Torsten Rassmann,1,1,Verwaltung & Geschäftsleitung,5,Geschäftsleitung,3,Werkstattleitung Handwerk & Service,Gievitzer Str. 88c,03991 61157-104,0174 9829396,rassmann@lebenshilfswerk-waren.de,,
+David Wülferling,1,1,Verwaltung & Geschäftsleitung,6,Geschäftsleitung,3,Werkstattleitung Finanzen & Liegenschaften,Gievitzer Str. 1 | EG,03991 61157-103,,wuelferling@lebenshilfswerk-waren.de,,
+Tobias Rödger,1,1,Verwaltung & Geschäftsleitung,5,Geschäftsleitung,3,Werkstattleitung Hotel & Grünes,Gievitzer Str. 88c,03991 61157-105,0172 6947019,roedger@lebenshilfswerk-waren.de,,
+Andrea Scharnowski,1,1,Verwaltung & Geschäftsleitung,5,Geschäftsleitung,2,Verwaltungsleitung & Bereichsleitung Kindergärten,Gievitzer Str. 88c,03991 61157-109,,andreascharnowski@lebenshilfswerk-waren.de,,
+Gordon Kempf,1,1,Verwaltung & Geschäftsleitung,7,,,"Öffentlichkeitsarbeit, IT & Medien",Gievitzer Str. 88c,03991 61157-125,0177 7722399,kempf@lebenshilfswerk-waren.de,it@lebenshilfswerk-waren.de,
+Dan Schneider,1,1,Verwaltung & Geschäftsleitung,7,,,Koordinator IT & Medien,Gievitzer Str. 88c,03991 61157-325,01767 2034852,dan.schneider@lebenshilfswerk-waren.de,it@lebenshilfswerk-waren.de,
+Simone Görs,1,1,Verwaltung & Geschäftsleitung,7,,,Personalabrechnung & Lohnbuchhaltung,Gievitzer Str. 88c,03991 61157-143,,goers@lebenshilfswerk-waren.de,,
+Kirsten Boddin,1,1,Verwaltung & Geschäftsleitung,7,Assistenz | Vertrauensperson für Werkstattrat & Frauenbeauftragte,,,Gievitzer Str. 24,03991 61157-555,01763 4137488,boddin@lebenshilfswerk-waren.de,,03991 61157-399
+Sandra Rienaß,1,1,Verwaltung & Geschäftsleitung,7,,,Finanzbuchhaltung & Qualitätsmanagement,Gievitzer Str. 88c,03991 61157-129,,rienass@lebenshilfswerk-waren.de,,
+Beate Schröder,1,1,Verwaltung & Geschäftsleitung,7,,,Leistungsabrechnung & Weiterbildung,Gievitzer Str. 88c,03991 61157-124,,beateschroeder@lebenshilfswerk-waren.de,,
+Manuela Griesbach,1,1,Verwaltung & Geschäftsleitung,7,,,Finanzbuchhaltung Debitoren & OPC Administration,Gievitzer Str. 88c,03991 61157-107,,griesbach@lebenshilfswerk-waren.de,,
+Anna Graubmann,1,1,Verwaltung & Geschäftsleitung,7,,,Finanzbuchhaltung Kreditoren (Lieferanten),Gievitzer Str. 88c,03991 61157-117,,graubmann@lebenshilfswerk-waren.de,,
+Steffi Fox,1,1,Verwaltung & Geschäftsleitung,8,,,Liegenschaften & Fuhrpark,Gievitzer Str. 1 | EG,03991 61157-128,,fronz@lebenshilfswerk-waren.de,,
+Sandra Rienaß,1,1,Verwaltung & Geschäftsleitung,4,Hinweisgeber | interne Meldestelle,,,Gievitzer Str. 88c,03991 61157-199,,hinweise@lebenshilfswerk-waren.de,,
+Claudia Oeler,5,,Haus der Bildung (EV & BBB),,,1,Teamleitung,Gievitzer Str. 1 | OG1,03991 61157-315,01514 4272607,oeler@lebenshilfswerk-waren.de,,03991 61157-399
+Anke Günther,5,,Haus der Bildung (EV & BBB),,,2,,,,01609 9292458,a.guenther@lebenshilfswerk-waren.de,,
+Martina Murzin,5,,Haus der Bildung (EV & BBB),,,,Kantine,Gievitzer Str. 1 | OG1,03991 61157-310,,mmurzin@lebenshilfswerk-waren.de,,03991 61157-399
+Birgit Wiegmann,5,,Haus der Bildung (EV & BBB),,,,Kantine,Gievitzer Str. 1 | OG1,03991 61157-310,,wiegmann@lebenshilfswerk-waren.de,,03991 61157-399
+Martina Schönrock,5,,Haus der Bildung (EV & BBB),,,,Hauswirtschaft,Gievitzer Str. 1 | OG1,03991 61157-316,,schoenrock@lebenshilfswerk-waren.de,,03991 61157-399
+André Schwenn,5,,Haus der Bildung (EV & BBB),,,,Montage,Gievitzer Str. 1 | OG2,03991 61157-318,,a.schwenn@lebenshilfswerk-waren.de,,03991 61157-399
+Silvia Marzinke,5,,Haus der Bildung (EV & BBB),,,,Grünes,Gievitzer Str. 1 | OG1,03991 61157-316,0171 8655788,s.marzinke@lebenshilfswerk-waren.de,,03991 61157-399
+Sandra Scherer-Schulz,6,,Sozialer Dienst,,,1,,Gievitzer Str. 1 | EG,03991 61157-300,01763 4121553,scherer@lebenshilfswerk-waren.de,,03991 61157-399
+Mandy Knecht,6,,Sozialer Dienst,,,2,,Gievitzer Str. 1 | EG,03991 61157-311,01763 4137403,knecht@lebenshilfswerk-waren.de,,03991 61157-399
+Doreen Timm,6,,Sozialer Dienst,,,3,,Gievitzer Str. 1 | EG,03991 61157-312,0171 9030418,timm@lebenshilfswerk-waren.de,,03991 61157-399
+Peggy Leddermann-Lobjinski,10,,Mobile Dienste,,AeW - Assistenz in der eigenen Wohnung,,,Gievitzer Str. 1 | EG,03991 61157-305,+49 176 417 151 78,peggy.leddermann@lebenshilfswerk-waren.de,betreuteswohnen@lebenshilfswerk-waren.de,03991 61157-399
+Carmen Frenkler,10,,Mobile Dienste,,AeW - Assistenz in der eigenen Wohnung,,,Gievitzer Str. 1 | EG,03991 61157-305,+49 176 417 160 12,carmen.frenkler@lebenshilfswerk-waren.de,betreuteswohnen@lebenshilfswerk-waren.de,03991 61157-399
+Ellen von Kessel,10,,Mobile Dienste,,AeW - Assistenz in der eigenen Wohnung,,,Gievitzer Str. 1 | EG,03991 61157-305,+49 151 414 294 71,ellen.vonkessel@lebenshilfswerk-waren.de,betreuteswohnen@lebenshilfswerk-waren.de,03991 61157-399
+Carina Borries,10,,Mobile Dienste,,AeW - Assistenz in der eigenen Wohnung,,,Gievitzer Str. 1 | EG,03991 61157-305,+49 176 417 172 28,katharina.rassbach@lebenshilfswerk-waren.de,betreuteswohnen@lebenshilfswerk-waren.de,03991 61157-399
+Katharina Raßbach,10,,Mobile Dienste,,AeW - Assistenz in der eigenen Wohnung,,,Gievitzer Str. 1 | EG,03991 61157-305,+49 151 288 048 34,carina.borries@lebenshilfswerk-waren.de,betreuteswohnen@lebenshilfswerk-waren.de,03991 61157-399
+Liane Ahrens,10,,Mobile Dienste,,Frühförderung,,,Gievitzer Str. 1a | OG1,03991 61157-430,+49 1511 27 18 611,fruehfoerderung@lebenshilfswerk-waren.de,,03991 61157-431
+Ulrike Thiel,10,,Mobile Dienste,,Frühförderung,,,Gievitzer Str. 1a | OG1,03991 61157-430,+49 1511 29 71 306,fruehfoerderung@lebenshilfswerk-waren.de,,03991 61157-431
+Katja Dahlke-Wussow | Monique Weisbach,10,,Mobile Dienste,,Frühförderung,,,Gievitzer Str. 1a | OG1,03991 61157-430,+49 1511 29 70 970,fruehfoerderung@lebenshilfswerk-waren.de,,03991 61157-431
+Regina Gantzer,12,,Kindertagesstätten,,Lütt Matten - Waren,,Leitung,Schleswiger Str. 7,03991 167204,,kindergarten@lebenshilfswerk-waren.de,,03991 634750
+Britta Havekost,12,,Kindertagesstätten,,Lütt Matten - Waren,,stellv. Leitung,Schleswiger Str. 7,03991 167204,,,,03991 634750
+Küche & Hauswirtschaft,12,,Kindertagesstätten,,Lütt Matten - Waren,,,Schleswiger Str. 7,03991 634751,,,,03991 634750
+Ute Manteufel,12,,Kindertagesstätten,,Buntes Leben Neustrelitz,,Leitung,Am Heizkraftwerk 15 | Neustrelitz,03981 442365,,kindergarten-nst@lebenshilfswerk-waren.de,,
+Nadine Hass,12,,Kindertagesstätten,,Buntes Leben Neustrelitz,,stellv. Leitung,Am Heizkraftwerk 15 | Neustrelitz,03981 442365,,kindergarten-nst@lebenshilfswerk-waren.de,,
+Jörg Hennings,7,,Service & Werkstätten,,Sünnerbar & Großküche,,Küchenleitung,Gievitzer Str. 88c,03991 61157-110,,kueche@lebenshilfswerk-waren.de,,
+Nicole Gebus,7,,Service & Werkstätten,,Sünnerbar & Großküche,,Kantinenleitung,Gievitzer Str. 88c,03991 61157-154,,kantine@lebenshilfswerk-waren.de,,
+Silke Gailus,7,,Service & Werkstätten,,"Laden ""andelinn""",,,Gievitzer Str. 88a,03991 61157-204,,andelinn@lebenshilfswerk-waren.de,,
+Mandy Gäth,7,,Service & Werkstätten,,Wäscherei,,,Gievitzer Str. 1 | OG1,03991 61157-313,,waescherei@lebenshilfswerk-waren.de,,
+Karoline Kaden,7,,Service & Werkstätten,,Wäscherei,,,Gievitzer Str. 1 | OG1,03991 61157-313,,waescherei@lebenshilfswerk-waren.de,,
+Antje Kalsow,7,,Service & Werkstätten,,Wäscherei,,,Gievitzer Str. 1 | OG1,03991 61157-313,,waescherei@lebenshilfswerk-waren.de,,
+Jan Kujus,7,,Service & Werkstätten,,Montage I,,,Gievitzer Str. 88a,03991 61157-201,,montage@lebenshilfswerk-waren.de,,
+Roland Gailus,7,,Service & Werkstätten,,Montage I,,,Gievitzer Str. 88a,03991 61157-201,,montage@lebenshilfswerk-waren.de,,
+Silva Bobrowski,7,,Service & Werkstätten,,Montage I,,,Gievitzer Str. 88a,,,,,
+Matthias Krüger,7,,Service & Werkstätten,,Montage II,,,Gievitzer Str. 88a,03991 61157-202,,montage@lebenshilfswerk-waren.de,,
+Manuela Günther,7,,Service & Werkstätten,,Montage II,,,Gievitzer Str. 88a,03991 61157-202,,montage@lebenshilfswerk-waren.de,,
+Christiane Wörner-Roloff,7,,Service & Werkstätten,,Keramik,,,Gievitzer Str. 1 | OG2,03991 61157-314,,keramik@lebenshilfswerk-waren.de,,
+Ina Krooß,7,,Service & Werkstätten,,Werkstattrat,,,Gievitzer Str. 1 | EG,03991 61157-342,,werkstattrat@lebenshilfswerk-waren.de,,
+Ulrike Büchler,7,,Service & Werkstätten,,Werkstattrat,,,Gievitzer Str. 1 | EG,03991 61157-342,,werkstattrat@lebenshilfswerk-waren.de,,
+Dominik Jahns,7,,Service & Werkstätten,,Werkstattrat,,,Gievitzer Str. 1 | EG,03991 61157-342,,werkstattrat@lebenshilfswerk-waren.de,,
+Jens Becker,7,,Service & Werkstätten,,Werkstattrat,,,Gievitzer Str. 1 | EG,03991 61157-342,,werkstattrat@lebenshilfswerk-waren.de,,
+Mike Helmke,7,,Service & Werkstätten,,Werkstattrat,,,Gievitzer Str. 1 | EG,03991 61157-342,,werkstattrat@lebenshilfswerk-waren.de,,
+Anne Schlichting,7,,Service & Werkstätten,,Frauenbeauftragte,,,Gievitzer Str. 1 | EG,03991 61157-342,,frauenbeauftragte@lebenshilfswerk-waren.de,,
+Anja Klare,7,,Service & Werkstätten,,Frauenbeauftragte,,,Gievitzer Str. 1 | EG,03991 61157-342,,frauenbeauftragte@lebenshilfswerk-waren.de,,
+Jan Ansorge,7,,Service & Werkstätten,,Montage 1a,,,Gievitzer Str. 1a,03991 61157-411,,montage1a@lebenshilfswerk-waren.de,,
+Heidrun Bachert,7,,Service & Werkstätten,,Montage 1a,,,Gievitzer Str. 1a,03991 61157-411,,montage1a@lebenshilfswerk-waren.de,,
+Michael Scharnowski,7,,Service & Werkstätten,,Tischlerei & Rahmenwerkstatt,1,,Gievitzer Str. 1a,03991 61157-421 | -420,,tischlerei@lebenshilfswerk-waren.de,,
+Jonas Scheffler,7,,Service & Werkstätten,,Tischlerei & Rahmenwerkstatt,2,,Gievitzer Str. 1a,03991 61157-421 | -420,,laser@lebenshilfswerk-waren.de,,
+Petra Lauermann,7,,Service & Werkstätten,,Textil,1,,Gievitzer Str. 1 | OG2,03991 61157-330,,textil@lebenshilfswerk-waren.de,,
+Bärbel Merkel,7,,Service & Werkstätten,,Textil,2,,Gievitzer Str. 1 | OG2,03991 61157-330,,textil@lebenshilfswerk-waren.de,,
+Nicole Lobing,8,,Hotel am Tiefwarensee,1,Hotel,1,Hotelleitung,Richard-Wossidlo-Str. 7a,03991 7475-104,,nicole.lobing@hotel-am-tiefwarensee.de,,
+Rezeption,8,,Hotel am Tiefwarensee,1,Hotel,2,,Richard-Wossidlo-Str. 7a,03991 7475-100,,info@hotel-am-tiefwarensee.de,,
+Marcel Lindow,8,,Hotel am Tiefwarensee,1,Hotel,3,Küchenleitung,Richard-Wossidlo-Str. 7a,03991 7475-105,,lindow@hotel-am-tiefwarensee.de,,
+Stefanie Garavito Vargas,8,,Hotel am Tiefwarensee,2,Konditorei,,Konditoreileitung,Richard-Wossidlo-Str. 7a,03991 7475-700,,vargas@hotel-am-tiefwarensee.de,,
+Veronika Hansen,8,,Hotel am Tiefwarensee,2,Konditorei,,,Richard-Wossidlo-Str. 7a,03991 7475-700,,,,
+André Neitzel,9,,Grünes,2,Landschaftspflegehof Müritzhof,1,Bereichsleitung,Müritzhof 1 + 2,03991 61154-12,+49 174 9172623,mueritzhof@lebenshilfswerk-waren.de,info@mueritzhof.de,
+Schäferhandy,9,,Grünes,2,Landschaftspflegehof Müritzhof,2,,Müritzhof 1 + 2,,01578 0615885,,,
+Carsten Leddermann,9,,Grünes,3,Hofschänke Müritzhof,1,Küchenleitung,Müritzhof 1 + 2,03991 61154-14,,c.leddermann@lebenshilfswerk-waren.de,,
+Küche,9,,Grünes,3,Hofschänke Müritzhof,2,,Müritzhof 1 + 2,03991 61154-14,,,,
+Stefan Fuhrmann,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,Bereichsleitung,Richard-Wossidlo-Str. 7a,03991 125641,0162 9238178,s.fuhrmann@lebenshilfswerk-waren.de,,
+Nadine Grewe,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,03991 125641,,nadine.grewe@lebenshilfswerk-waren.de,,
+Jörn Bitterlich,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01578 3051686,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Jana Holzhausen,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01578 3051657,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Mike Gielow,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01768 9961509,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Stefan Schmidt,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01578 3051962,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Nicole Brüning,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01578 3052409,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Marcus Mache,9,,Grünes,1,Gärtnerei & Schaugarten am Tiefwarensee,,,Richard-Wossidlo-Str. 7a,,01764 2897844,landschaftsgaertnerei@lebenshilfswerk-waren.de,,
+Alexander Schenck,9,,Grünes,5,Grünanlagenpflege,,,Gievitzer Str. 24,,+49 157 830 519 98,gruenanlagen@lebenshilfswerk-waren.de,,
+Hans-Jürgen Stelter,9,,Grünes,4,Gärtnerei Schwenzin,,Bereichsleitung,Schwenzin 6,03991 122513,,gaertnereischwenzin@lebenshilfswerk-waren.de,,
+Juliane Thom,13,,Tagesgruppen,1,,,Bereichsleitung,Gievitzer Str. 1 | EG,,01764 2841077,juliane.thom@lebenshilfswerk-waren.de,,
+Tagesgruppe Gievitzer Str. 22,13,,Tagesgruppen,2,,,,Gievitzer Str. 22,03991 61157-516,,tagesgruppe@lebenshilfswerk-waren.de,,
+Tagesgruppe Teschenberg,13,,Tagesgruppen,3,,,,Karl-Liebknecht-Str. 2 | OG2,03991 18168-90,,tagesgruppe-teschenberg@lebenshilfswerk-waren.de,,03991 1816-88
+Tagesgruppe Neustrelitz,13,,Tagesgruppen,4,,,,Am Heizkraftwerk 15 | Neustrelitz,03981 4899396,,tagesstaette-nst@lebenshilfswerk-waren.de,,
+Doreen Wagner,11,,Wohnen,,Wohneinrichtung Haus am Kietz,,Leitung,Kietzstr. 13d,03991 74 73 519,,doreen.wagner@lebenshilfswerk-waren.de,,03991 74 73 521
+Mark Strauch,11,,Wohnen,,Wohneinrichtung Haus am Kietz,,,Kietzstr. 13d,03991 74 73 519,,mark.strauch@lebenshilfswerk-waren.de,,03991 74 73 521
+Betreuungsfachkräfte,11,,Wohnen,,Wohneinrichtung Haus am Kietz,,,Kietzstr. 13d,03991 74 73 519,,wohnheimkietz@lebenshilfswerk-waren.de,,03991 74 73 521
+Heike Gründig,11,,Wohnen,,Wohneinrichtung Haus am Teschenberg,,Leitung,Karl-Liebknecht-Str. 2,03991 1816 - 82,01764 2832632,gruendig@lebenshilfswerk-waren.de,,03991 1816-88
+Dorina Fiege,11,,Wohnen,,Wohneinrichtung Haus am Teschenberg,,,Karl-Liebknecht-Str. 2,03991 1816 - 82,01764 2832632,wohnheim@lebenshilfswerk-waren.de,,03991 1816-88
+Betreuungsfachkräfte,11,,Wohnen,,Wohneinrichtung Haus am Teschenberg,,,Karl-Liebknecht-Str. 2,03991 1816 - 81,01764 2832632,wohnheim@lebenshilfswerk-waren.de,,03991 1816-88
+Doreen Schumacher,11,,Wohnen,,Wohneinrichtung Müritzhof,,Leitung,Müritzhof 1+2,03991 611054-13,,,,03991 611054-15
+Betreuungsfachkräfte,11,,Wohnen,,Wohneinrichtung Müritzhof,,,Müritzhof 1+2,03991 611054-13,+49 176 418 441 37,mueritzhof-wohnen@lebenshilfswerk-waren.de,,03991 611054-15
+Andreas Pehlke,11,,Wohnen,,Wohneinrichtung Müritzhof,,,Müritzhof 1+2,03991 611054-13,+49 176 418 441 37,pehlke@lebenshilfswerk-waren.de,,03991 611054-15
+Martin Papenbroock,14,,Fahrdienst & Servicetour,,,,Servicetour 01,,,01763 4120355,tour@lebenshilfswerk-waren.de,,
+Tobias Fethke,14,,Fahrdienst & Servicetour,,,,Servicetour 02,,,01609 9297250,tour@lebenshilfswerk-waren.de,,
+Matthias Gensch,14,,Fahrdienst & Servicetour,,,,Servicetour 03 - Neustrelitz,,,,,,
+Holger Schrader,15,,Betriebshandwerk & Technik,,,,Hauselektrik,Richard-Wossidlo Str. 7a,,,,,
+Mike Leverenz,15,,Betriebshandwerk & Technik,,,,Haustechnik,Richard-Wossidlo Str. 7a,,0175 8893589,,,
+Reinhard Gutsch,15,,Betriebshandwerk & Technik,,,,Haustechnik,Richard-Wossidlo-Str. 7a,,01764 1873980,,,
+Ingo Günther,15,,Betriebshandwerk & Technik,,,,Maler,Gievitzer Str. 24,,0162 9844801,,,
+Josef Wrobel,15,,Betriebshandwerk & Technik,,,,Reinigungs- & Hygienemanagement,Gievitzer Str. 1,,01517 0608976,,,
